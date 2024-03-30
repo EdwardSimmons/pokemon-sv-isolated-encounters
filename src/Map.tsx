@@ -108,13 +108,11 @@ export default function Map() {
   return (
     <>
       <FormControl>
-        <FormLabel id="demo-controlled-radio-buttons-group">
-          Select a Region
-        </FormLabel>
+        <FormLabel id="region-select">Select a Region</FormLabel>
         <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
           row
+          aria-labelledby="region-select"
+          name="region-select-radio-buttons-group"
           value={mapRegion}
           onChange={handleMapRegionChange}
         >
@@ -145,7 +143,7 @@ export default function Map() {
         crs={CRS.Simple}
       >
         <TileLayer
-          attribution="Pok&eacute;mon Scarlet & Violet"
+          attribution="Map courtesy of <a href='https://www.serebii.net'>Serebii.net</a>."
           noWrap
           url={mapUrl}
         />
