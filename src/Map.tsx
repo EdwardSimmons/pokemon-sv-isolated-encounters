@@ -61,7 +61,15 @@
 //     iconSize: [32, 32], // size of the icon
 //     iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
 //   });
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material"
 import { CRS, LatLngBounds } from "leaflet"
+import { useEffect, useState } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 
 function MapController() {
@@ -75,23 +83,74 @@ function MapController() {
   return null
 }
 
+export enum MapRegion {
+  PALDEA = "paldea",
+  KITIKAMI = "kitakami",
+  TERARIUM = "terarium",
+}
+
 export default function Map() {
+  const [mapRegion, setMapRegion] = useState<MapRegion>(MapRegion.PALDEA)
+  const [mapUrl, setMapUrl] = useState("")
+
+  useEffect(() => {
+    setMapUrl(
+      `https://www.serebii.net/pokearth/${mapRegion}/map/tile_{z}-{x}-{y}.png`
+    )
+  }, [mapRegion])
+
+  const handleMapRegionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setMapRegion((event.target as HTMLInputElement).value as MapRegion)
+  }
+
   return (
-    <MapContainer
-      style={{ height: "600px" }}
-      zoom={0}
-      center={[0, 0]}
-      minZoom={0}
-      maxZoom={3}
-      scrollWheelZoom={false}
-      crs={CRS.Simple}
-    >
-      <TileLayer
-        attribution="Pok&eacute;mon Scarlet & Violet"
-        noWrap
-        url="https://www.serebii.net/pokearth/paldea/map/tile_{z}-{x}-{y}.png"
-      />
-      <MapController />
-    </MapContainer>
+    <>
+      <FormControl>
+        <FormLabel id="demo-controlled-radio-buttons-group">
+          Select a Region
+        </FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          row
+          value={mapRegion}
+          onChange={handleMapRegionChange}
+        >
+          <FormControlLabel
+            value={MapRegion.PALDEA}
+            control={<Radio />}
+            label="Paldea"
+          />
+          <FormControlLabel
+            value={MapRegion.KITIKAMI}
+            control={<Radio />}
+            label="Kitakami"
+          />
+          <FormControlLabel
+            value={MapRegion.TERARIUM}
+            control={<Radio />}
+            label="Terarium"
+          />
+        </RadioGroup>
+      </FormControl>
+      <MapContainer
+        style={{ height: "600px" }}
+        zoom={0}
+        center={[0, 0]}
+        minZoom={0}
+        maxZoom={3}
+        scrollWheelZoom={false}
+        crs={CRS.Simple}
+      >
+        <TileLayer
+          attribution="Pok&eacute;mon Scarlet & Violet"
+          noWrap
+          url={mapUrl}
+        />
+        <MapController />
+      </MapContainer>
+    </>
   )
 }
