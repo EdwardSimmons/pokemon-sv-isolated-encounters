@@ -44,23 +44,6 @@
 //   ).addTo(map);
 
 //   var layPokeFilter = L.featureGroup(); // pokemon search results are displayed on this layer
-//   var pokeballIcon = L.icon({
-//     iconUrl: "https://www.serebii.net/pokearth/hisui/icons/pokeball.png",
-//     iconSize: [32, 32], // size of the icon
-//     iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
-//   });
-//   var violetIcon = L.icon({
-//     iconUrl:
-//       "https://www.serebii.net/pokearth/hisui/icons/violetpokeball.png",
-//     iconSize: [32, 32], // size of the icon
-//     iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
-//   });
-//   var scarletIcon = L.icon({
-//     iconUrl:
-//       "https://www.serebii.net/pokearth/hisui/icons/scarletpokeball.png",
-//     iconSize: [32, 32], // size of the icon
-//     iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
-//   });
 import {
   FormControl,
   FormControlLabel,
@@ -68,20 +51,10 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material"
-import { CRS, LatLngBounds } from "leaflet"
+import { CRS } from "leaflet"
 import { useEffect, useState } from "react"
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
-
-function MapController() {
-  const map = useMap()
-  const southWest = map.unproject([0, 4096], map.getMaxZoom())
-  const northEast = map.unproject([4096, 0], map.getMaxZoom())
-  const bounds = new LatLngBounds(southWest, northEast)
-  map.setMaxBounds(bounds)
-  console.log(map.getCenter())
-
-  return null
-}
+import { MapContainer, TileLayer } from "react-leaflet"
+import MapController from "./MapController"
 
 export enum MapRegion {
   PALDEA = "paldea",
