@@ -5,22 +5,22 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 export const layPokeball = new FeatureGroup()
 export const pokeballIcon = new Icon({
   iconUrl: "https://www.serebii.net/pokearth/hisui/icons/pokeball.png",
-  iconSize: [32, 32], // size of the icon
-  iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
 })
 
 export const layScarlet = new FeatureGroup()
 export const scarletIcon = new Icon({
   iconUrl: "/pokearth/hisui/icons/scarletpokeball.png",
-  iconSize: [32, 32], // size of the icon
-  iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
 })
 
 export const layViolet = new FeatureGroup()
 export const violetIcon = new Icon({
   iconUrl: "/pokearth/hisui/icons/violetpokeball.png",
-  iconSize: [32, 32], // size of the icon
-  iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
 })
 
 export default function MapController() {

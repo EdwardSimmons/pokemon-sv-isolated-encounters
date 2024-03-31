@@ -8,49 +8,7 @@ import { Quotes } from "./features/quotes/Quotes"
 import Divider from "@mui/material/Divider"
 import { useEffect, useState } from "react"
 import Map from "./Map"
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query"
-
-const queryClient = new QueryClient()
-
-const BASE_URL = "https://jsonplaceholder.typicode.com"
-
-interface Post {
-  id: number
-  title: string
-}
-
-function Demo() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["posts"],
-    queryFn: (): Promise<Post[]> =>
-      fetch(`${BASE_URL}/postsss`).then(res => res.json()),
-  })
-
-  if (isLoading) {
-    return <Typography variant="h6">Loading...</Typography>
-  }
-  if (error) {
-    return (
-      <Typography variant="h6">An error occured: {error.message}</Typography>
-    )
-  }
-
-  return data ? (
-    <>
-      {data.map((post, i) => (
-        <Box key={i} mb={2}>
-          <Typography variant="h6">{post.title}</Typography>
-        </Box>
-      ))}
-    </>
-  ) : (
-    <Typography variant="h6">The posts array is undefined.</Typography>
-  )
-}
+import { Pokedex } from "./features/pokemon/Pokemon"
 
 function Copyright() {
   return (
@@ -66,20 +24,9 @@ function Copyright() {
 
 export default function App() {
   return (
-    // <QueryClientProvider client={queryClient}>
-    //   <Container maxWidth="sm">
-    //     <Box sx={{ my: 4 }}>
-    //       <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-    //         Practice
-    //       </Typography>
-    //       {/* <Quotes /> */}
-    //       <Demo />
-    //       <Copyright />
-    //     </Box>
-    //   </Container>
-    // </QueryClientProvider>
     <Container maxWidth="sm">
-      <Map />
+      <Pokedex />
+      {/* <Map /> */}
     </Container>
   )
 }

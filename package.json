@@ -14,7 +14,6 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@reduxjs/toolkit": "^2.0.1",
-    "@tanstack/react-query": "^5.28.4",
     "leaflet": "^1.9.4",
     "react": "latest",
     "react-dom": "latest",
@@ -26,6 +25,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "latest",
+    "pokeapi-types": "^0.0.2",
     "typescript": "latest",
     "vite": "latest",
     "vite-tsconfig-paths": "latest"
