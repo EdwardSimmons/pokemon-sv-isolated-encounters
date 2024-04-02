@@ -44,17 +44,11 @@
 //   ).addTo(map);
 
 //   var layPokeFilter = L.featureGroup(); // pokemon search results are displayed on this layer
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material"
+
 import { CRS } from "leaflet"
-import { useEffect, useState } from "react"
 import { MapContainer, TileLayer } from "react-leaflet"
 import MapController from "./MapController"
+import { useEffect, useState } from "react"
 
 export enum MapRegion {
   PALDEA = "paldea",
@@ -62,66 +56,35 @@ export enum MapRegion {
   TERARIUM = "terarium",
 }
 
-export default function Map() {
-  const [mapRegion, setMapRegion] = useState<MapRegion>(MapRegion.PALDEA)
-  const [mapUrl, setMapUrl] = useState("")
+export interface MapProps {
+  region: MapRegion
+}
 
+export default function Map(props: MapProps) {
+  const [mapUrl, setMapUrl] = useState(
+    `https://www.serebii.net/pokearth/${props.region}/map/tile_{z}-{x}-{y}.png`
+  )
   useEffect(() => {
     setMapUrl(
-      `https://www.serebii.net/pokearth/${mapRegion}/map/tile_{z}-{x}-{y}.png`
+      `https://www.serebii.net/pokearth/${props.region}/map/tile_{z}-{x}-{y}.png`
     )
-  }, [mapRegion])
-
-  const handleMapRegionChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMapRegion((event.target as HTMLInputElement).value as MapRegion)
-  }
-
+  }, [props.region])
   return (
-    <>
-      <FormControl>
-        <FormLabel id="region-select">Select a Region</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="region-select"
-          name="region-select-radio-buttons-group"
-          value={mapRegion}
-          onChange={handleMapRegionChange}
-        >
-          <FormControlLabel
-            value={MapRegion.PALDEA}
-            control={<Radio />}
-            label="Paldea"
-          />
-          <FormControlLabel
-            value={MapRegion.KITIKAMI}
-            control={<Radio />}
-            label="Kitakami"
-          />
-          <FormControlLabel
-            value={MapRegion.TERARIUM}
-            control={<Radio />}
-            label="Terarium"
-          />
-        </RadioGroup>
-      </FormControl>
-      <MapContainer
-        style={{ height: "600px" }}
-        zoom={0}
-        center={[0, 0]}
-        minZoom={0}
-        maxZoom={3}
-        scrollWheelZoom={false}
-        crs={CRS.Simple}
-      >
-        <TileLayer
-          attribution="Map courtesy of <a href='https://www.serebii.net'>Serebii.net</a>."
-          noWrap
-          url={mapUrl}
-        />
-        <MapController />
-      </MapContainer>
-    </>
+    <MapContainer
+      style={{ height: "512px", maxWidth: "512px" }}
+      zoom={0}
+      center={[0, 0]}
+      minZoom={0}
+      maxZoom={3}
+      scrollWheelZoom={false}
+      crs={CRS.Simple}
+    >
+      <TileLayer
+        attribution="Map courtesy of <a href='https://www.serebii.net'>Serebii.net</a>."
+        noWrap
+        url={mapUrl}
+      />
+      <MapController />
+    </MapContainer>
   )
 }
