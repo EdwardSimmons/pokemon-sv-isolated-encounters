@@ -3,7 +3,6 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Link,
   Radio,
   RadioGroup,
   Stack,
@@ -15,20 +14,16 @@ import { Pokedex, TypeSelect } from "./features/pokemon/Pokemon"
 import { PokedexName } from "./features/pokemon/pokemonApiSlice"
 import Str from "./utilities/Str"
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}.
-    </Typography>
-  )
+enum GameVersion {
+  SCARLET = "Scarlet",
+  VIOLET = "Violet",
 }
 
 export default function App() {
   const [mapRegion, setMapRegion] = useState<MapRegion>(MapRegion.PALDEA)
+  const [gameVersion, setGameVersion] = useState<GameVersion>(
+    GameVersion.SCARLET
+  )
   const [pokedexName, setPokedexName] = useState<PokedexName>(
     PokedexName.PALDEA
   )
@@ -52,9 +47,37 @@ export default function App() {
   ) => {
     setMapRegion((event.target as HTMLInputElement).value as MapRegion)
   }
+
+  const handleGameVersionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setGameVersion((event.target as HTMLInputElement).value as GameVersion)
+  }
+
   return (
     <Container maxWidth="sm">
-      <FormControl>
+      <FormControl fullWidth>
+        <FormLabel id="version-select">Select a Game Version</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="version-select"
+          name="version-select-radio-buttons-group"
+          value={gameVersion}
+          onChange={handleGameVersionChange}
+        >
+          <FormControlLabel
+            value={GameVersion.SCARLET}
+            control={<Radio />}
+            label={GameVersion.SCARLET}
+          />
+          <FormControlLabel
+            value={GameVersion.VIOLET}
+            control={<Radio />}
+            label={GameVersion.VIOLET}
+          />
+        </RadioGroup>
+      </FormControl>
+      <FormControl fullWidth>
         <FormLabel id="region-select">Select a Region</FormLabel>
         <RadioGroup
           row
