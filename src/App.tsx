@@ -75,7 +75,7 @@ export default function App() {
   return (
     <>
       <Loader />
-      <Container maxWidth="sm" sx={{ py: 2 }}>
+      <Container maxWidth="sm" sx={{ py: 3 }}>
         <FormControl fullWidth>
           <FormLabel id="version-select">Select a Game Version</FormLabel>
           <RadioGroup
