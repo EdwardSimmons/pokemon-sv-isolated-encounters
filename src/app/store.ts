@@ -1,8 +1,6 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { counterSlice } from "../features/counter/counterSlice"
-import { quotesApiSlice } from "../features/quotes/quotesApiSlice"
 import { pokemonApiSlice } from "@/features/pokemon/pokemonApiSlice"
 import { pokemonTypeSlice } from "@/features/pokemon/pokemonTypeSlice"
 import { pokemonNameSlice } from "@/features/pokemon/pokemonNameSlice"
@@ -10,8 +8,6 @@ import { pokemonNameSlice } from "@/features/pokemon/pokemonNameSlice"
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices(
-  counterSlice,
-  quotesApiSlice,
   pokemonApiSlice,
   pokemonTypeSlice,
   pokemonNameSlice
@@ -27,10 +23,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
     middleware: getDefaultMiddleware => {
-      return getDefaultMiddleware().concat(
-        quotesApiSlice.middleware,
-        pokemonApiSlice.middleware
-      )
+      return getDefaultMiddleware().concat(pokemonApiSlice.middleware)
     },
     preloadedState,
   })

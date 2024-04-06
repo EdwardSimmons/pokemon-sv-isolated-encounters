@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 export interface PokemonNameState {
-  name: string | null
+  name: string
 }
 
 const initialState: PokemonNameState = {
-  name: null,
+  name: "",
 }
 
 export const pokemonNameSlice = createSlice({
@@ -18,7 +18,7 @@ export const pokemonNameSlice = createSlice({
       state.name = action.payload
     }),
     clearName: create.reducer(state => {
-      state.name = null
+      state.name = ""
     }),
   }),
   // You can define your selectors here. These selectors receive the slice

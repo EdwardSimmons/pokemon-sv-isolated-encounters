@@ -10,15 +10,19 @@ import {
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import Map, { MapRegion } from "./Map"
-import { Pokedex, TypeSelect } from "./features/pokemon/Pokemon"
+import { Pokedex, PokemonInfo, TypeSelect } from "./features/pokemon/Pokemon"
 import { PokedexName } from "./features/pokemon/pokemonApiSlice"
 import Str from "./utilities/Str"
-import { useAppSelector } from "./app/hooks"
+import { useAppDispatch, useAppSelector } from "./app/hooks"
 import {
   selectType,
   selectPokemonOfType,
 } from "./features/pokemon/pokemonTypeSlice"
-import { selectPokemonName } from "./features/pokemon/pokemonNameSlice"
+import {
+  clearName,
+  selectPokemonName,
+} from "./features/pokemon/pokemonNameSlice"
+import { Loader } from "./Loader"
 
 enum GameVersion {
   SCARLET = "Scarlet",
@@ -26,6 +30,7 @@ enum GameVersion {
 }
 
 export default function App() {
+  // Component state
   const [mapRegion, setMapRegion] = useState<MapRegion>(MapRegion.PALDEA)
   const [gameVersion, setGameVersion] = useState<GameVersion>(
     GameVersion.SCARLET
@@ -33,6 +38,9 @@ export default function App() {
   const [pokedexName, setPokedexName] = useState<PokedexName>(
     PokedexName.PALDEA
   )
+
+  // App state
+  const dispatch = useAppDispatch()
   const selectedType = useAppSelector(selectType)
   const selectedPokemon = useAppSelector(selectPokemonName)
   const pokemonOfSelectedType = useAppSelector(selectPokemonOfType)
@@ -55,6 +63,7 @@ export default function App() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setMapRegion((event.target as HTMLInputElement).value as MapRegion)
+    dispatch(clearName())
   }
 
   const handleGameVersionChange = (
@@ -64,63 +73,67 @@ export default function App() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ py: 2 }}>
-      <FormControl fullWidth>
-        <FormLabel id="version-select">Select a Game Version</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="version-select"
-          name="version-select-radio-buttons-group"
-          value={gameVersion}
-          onChange={handleGameVersionChange}
-        >
-          <FormControlLabel
-            value={GameVersion.SCARLET}
-            control={<Radio />}
-            label={GameVersion.SCARLET}
-          />
-          <FormControlLabel
-            value={GameVersion.VIOLET}
-            control={<Radio />}
-            label={GameVersion.VIOLET}
-          />
-        </RadioGroup>
-      </FormControl>
-      <FormControl fullWidth>
-        <FormLabel id="region-select">Select a Region</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="region-select"
-          name="region-select-radio-buttons-group"
-          value={mapRegion}
-          onChange={handleMapRegionChange}
-        >
-          {Object.values(MapRegion).map(region => (
+    <>
+      <Loader />
+      <Container maxWidth="sm" sx={{ py: 2 }}>
+        <FormControl fullWidth>
+          <FormLabel id="version-select">Select a Game Version</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="version-select"
+            name="version-select-radio-buttons-group"
+            value={gameVersion}
+            onChange={handleGameVersionChange}
+          >
             <FormControlLabel
-              value={region}
+              value={GameVersion.SCARLET}
               control={<Radio />}
-              label={new Str(region).toTitleCase()}
-              key={region}
+              label={GameVersion.SCARLET}
             />
-          ))}
-        </RadioGroup>
-      </FormControl>
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        sx={{ alignItems: "center" }}
-      >
-        <Pokedex name={pokedexName} />
-        <Typography variant="body1" sx={{ mx: { xs: 0, sm: 2 } }}>
-          or
-        </Typography>
-        <TypeSelect />
-      </Stack>
-      <Typography variant="body1">{selectedPokemon}</Typography>
-      <Typography variant="body1">{selectedType}</Typography>
-      <Typography variant="body1">
+            <FormControlLabel
+              value={GameVersion.VIOLET}
+              control={<Radio />}
+              label={GameVersion.VIOLET}
+            />
+          </RadioGroup>
+        </FormControl>
+        <FormControl fullWidth>
+          <FormLabel id="region-select">Select a Region</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="region-select"
+            name="region-select-radio-buttons-group"
+            value={mapRegion}
+            onChange={handleMapRegionChange}
+          >
+            {Object.values(MapRegion).map(region => (
+              <FormControlLabel
+                value={region}
+                control={<Radio />}
+                label={new Str(region).toTitleCase()}
+                key={region}
+              />
+            ))}
+          </RadioGroup>
+        </FormControl>
+
+        {/* <Typography variant="body1">{selectedType}</Typography>
+        <Typography variant="body1">
         {JSON.stringify(pokemonOfSelectedType)}
-      </Typography>
-      <Map region={mapRegion} />
-    </Container>
+      </Typography> */}
+        <Map region={mapRegion} />
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{ alignItems: "center" }}
+        >
+          <Pokedex name={pokedexName} />
+          <Typography variant="body1" sx={{ mx: { xs: 0, sm: 2 } }}>
+            or
+          </Typography>
+          <TypeSelect />
+        </Stack>
+        <PokemonInfo name={selectedPokemon} />
+      </Container>
+    </>
   )
 }

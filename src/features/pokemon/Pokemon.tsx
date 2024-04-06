@@ -1,7 +1,13 @@
-import { PokedexName, PokemonType, useGetPokedexQuery } from "./pokemonApiSlice"
+import {
+  PokedexName,
+  PokemonId,
+  PokemonType,
+  useGetPokedexQuery,
+  useGetPokemonQuery,
+} from "./pokemonApiSlice"
 import Str from "@/utilities/Str"
 import Typography from "@mui/material/Typography"
-import { Autocomplete, TextField } from "@mui/material"
+import { Autocomplete, Avatar, Stack, TextField } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
 import { clearName, selectPokemonName, setName } from "./pokemonNameSlice"
@@ -87,4 +93,29 @@ export const TypeSelect = () => {
       disabled={!!selectedPokemon}
     />
   )
+}
+
+export interface PokemonInfoProps {
+  name: PokemonId
+}
+
+export const PokemonInfo = (props: PokemonInfoProps) => {
+  // Using a query hook automatically fetches data and returns query values
+
+  const { data, isError, isLoading, isSuccess } = useGetPokemonQuery(props.name)
+
+  if (isSuccess && data?.name) {
+    const pokemonName = new Str(data.name).toTitleCase()
+    return (
+      <Stack
+        direction="row"
+        sx={{ alignItems: "center", justifyContent: "space-between" }}
+      >
+        <Typography variant="h4">{pokemonName}</Typography>
+        <Avatar src={data.sprites.front_shiny} sx={{ height: 64, width: 64 }} />
+      </Stack>
+    )
+  }
+
+  return null
 }

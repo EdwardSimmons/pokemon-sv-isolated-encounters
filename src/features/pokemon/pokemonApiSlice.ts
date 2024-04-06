@@ -53,5 +53,7 @@ export const pokemonApiSlice = createApi({
   }),
 })
 
+export const useGetPokemonState =
+  pokemonApiSlice.endpoints.getPokemon.useQueryState
 export const { useGetPokedexQuery, useGetPokemonQuery, useGetTypeQuery } =
   pokemonApiSlice

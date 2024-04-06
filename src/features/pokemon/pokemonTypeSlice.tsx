@@ -4,13 +4,13 @@ import { createAppSlice } from "@/app/createAppSlice"
 import { PokeAPI } from "pokeapi-types"
 
 export interface PokemonTypeState {
-  value: PokemonType | null
+  value: PokemonType | string
   pokemon: PokeAPI.TypePokemon[]
   status: "idle" | "loading" | "failed"
 }
 
 const initialState: PokemonTypeState = {
-  value: null,
+  value: "",
   pokemon: [],
   status: "idle",
 }
@@ -25,7 +25,7 @@ export const pokemonTypeSlice = createAppSlice({
       state.value = action.payload
     }),
     clearType: create.reducer(state => {
-      state.value = null
+      state.value = ""
       state.pokemon = []
     }),
     fetchType: create.asyncThunk(
@@ -53,6 +53,7 @@ export const pokemonTypeSlice = createAppSlice({
   // state as their first argument.
   selectors: {
     selectType: state => state.value,
+    fetchTypeStatus: state => state.status,
     selectPokemonOfType: state => state.pokemon,
   },
 })
@@ -61,4 +62,5 @@ export const pokemonTypeSlice = createAppSlice({
 export const { setType, clearType, fetchType } = pokemonTypeSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectType, selectPokemonOfType } = pokemonTypeSlice.selectors
+export const { selectType, fetchTypeStatus, selectPokemonOfType } =
+  pokemonTypeSlice.selectors
