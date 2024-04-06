@@ -1,19 +1,8 @@
-import {
-  Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-} from "@mui/material"
+import { Container, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import Map, { MapRegion } from "./Map"
+import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { Pokedex, PokemonInfo, TypeSelect } from "./features/pokemon/Pokemon"
 import { PokedexName } from "./features/pokemon/pokemonApiSlice"
-import Str from "./utilities/Str"
-import { useAppDispatch, useAppSelector } from "./app/hooks"
 import {
   selectType,
   selectPokemonOfType,
@@ -23,11 +12,9 @@ import {
   selectPokemonName,
 } from "./features/pokemon/pokemonNameSlice"
 import { Loader } from "./Loader"
-
-enum GameVersion {
-  SCARLET = "Scarlet",
-  VIOLET = "Violet",
-}
+import VersionSelect, { GameVersion } from "./VersionSelect"
+import RegionSelect from "./RegionSelect"
+import Map, { MapRegion } from "./Map"
 
 export default function App() {
   // Component state
@@ -69,6 +56,7 @@ export default function App() {
   const handleGameVersionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    console.log("[ App ] handleGameVersionChange")
     setGameVersion((event.target as HTMLInputElement).value as GameVersion)
   }
 
@@ -76,46 +64,11 @@ export default function App() {
     <>
       <Loader />
       <Container maxWidth="sm" sx={{ py: 3 }}>
-        <FormControl fullWidth>
-          <FormLabel id="version-select">Select a Game Version</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="version-select"
-            name="version-select-radio-buttons-group"
-            value={gameVersion}
-            onChange={handleGameVersionChange}
-          >
-            <FormControlLabel
-              value={GameVersion.SCARLET}
-              control={<Radio />}
-              label={GameVersion.SCARLET}
-            />
-            <FormControlLabel
-              value={GameVersion.VIOLET}
-              control={<Radio />}
-              label={GameVersion.VIOLET}
-            />
-          </RadioGroup>
-        </FormControl>
-        <FormControl fullWidth>
-          <FormLabel id="region-select">Select a Region</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="region-select"
-            name="region-select-radio-buttons-group"
-            value={mapRegion}
-            onChange={handleMapRegionChange}
-          >
-            {Object.values(MapRegion).map(region => (
-              <FormControlLabel
-                value={region}
-                control={<Radio />}
-                label={new Str(region).toTitleCase()}
-                key={region}
-              />
-            ))}
-          </RadioGroup>
-        </FormControl>
+        <VersionSelect
+          version={gameVersion}
+          onChange={handleGameVersionChange}
+        />
+        <RegionSelect region={mapRegion} onChange={handleMapRegionChange} />
 
         {/* <Typography variant="body1">{selectedType}</Typography>
         <Typography variant="body1">
