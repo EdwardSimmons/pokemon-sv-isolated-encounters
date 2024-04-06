@@ -13,6 +13,9 @@ import Map, { MapRegion } from "./Map"
 import { Pokedex, TypeSelect } from "./features/pokemon/Pokemon"
 import { PokedexName } from "./features/pokemon/pokemonApiSlice"
 import Str from "./utilities/Str"
+import { useAppSelector } from "./app/hooks"
+import { selectType } from "./features/pokemon/pokemonTypeSlice"
+import { selectPokemonName } from "./features/pokemon/pokemonNameSlice"
 
 enum GameVersion {
   SCARLET = "Scarlet",
@@ -27,6 +30,8 @@ export default function App() {
   const [pokedexName, setPokedexName] = useState<PokedexName>(
     PokedexName.PALDEA
   )
+  const selectedType = useAppSelector(selectType)
+  const selectedPokemon = useAppSelector(selectPokemonName)
 
   useEffect(() => {
     switch (mapRegion) {
@@ -91,6 +96,7 @@ export default function App() {
               value={region}
               control={<Radio />}
               label={new Str(region).toTitleCase()}
+              key={region}
             />
           ))}
         </RadioGroup>
@@ -105,6 +111,8 @@ export default function App() {
         </Typography>
         <TypeSelect />
       </Stack>
+      <Typography variant="body1">{selectedPokemon}</Typography>
+      <Typography variant="body1">{selectedType}</Typography>
       <Map region={mapRegion} />
     </Container>
   )
