@@ -3,7 +3,7 @@ import Str from "@/utilities/Str"
 import Typography from "@mui/material/Typography"
 import { Autocomplete, TextField } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
-import { clearType, selectType, setType } from "./pokemonTypeSlice"
+import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
 import { clearName, selectPokemonName, setName } from "./pokemonNameSlice"
 
 export interface PokedexProps {
@@ -14,6 +14,7 @@ export const Pokedex = (props: PokedexProps) => {
   const dispatch = useAppDispatch()
   const selectedType = useAppSelector(selectType)
   const handleOnChangePokemon = (event: any, newValue: string | null) => {
+    // Update state
     if (newValue) {
       const pokemonName = newValue.split(" - ")[1].toLowerCase()
       dispatch(setName(pokemonName))
@@ -62,8 +63,11 @@ export const TypeSelect = () => {
   const selectedPokemon = useAppSelector(selectPokemonName)
 
   const handleOnChangeType = (event: any, newValue: string | null) => {
+    // Update state
     if (newValue) {
-      dispatch(setType(newValue.toLowerCase() as PokemonType))
+      const type = newValue.toLowerCase() as PokemonType
+      dispatch(setType(type))
+      dispatch(fetchType(type))
     } else {
       dispatch(clearType())
     }

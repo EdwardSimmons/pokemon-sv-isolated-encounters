@@ -14,7 +14,10 @@ import { Pokedex, TypeSelect } from "./features/pokemon/Pokemon"
 import { PokedexName } from "./features/pokemon/pokemonApiSlice"
 import Str from "./utilities/Str"
 import { useAppSelector } from "./app/hooks"
-import { selectType } from "./features/pokemon/pokemonTypeSlice"
+import {
+  selectType,
+  selectPokemonOfType,
+} from "./features/pokemon/pokemonTypeSlice"
 import { selectPokemonName } from "./features/pokemon/pokemonNameSlice"
 
 enum GameVersion {
@@ -32,6 +35,7 @@ export default function App() {
   )
   const selectedType = useAppSelector(selectType)
   const selectedPokemon = useAppSelector(selectPokemonName)
+  const pokemonOfSelectedType = useAppSelector(selectPokemonOfType)
 
   useEffect(() => {
     switch (mapRegion) {
@@ -113,6 +117,9 @@ export default function App() {
       </Stack>
       <Typography variant="body1">{selectedPokemon}</Typography>
       <Typography variant="body1">{selectedType}</Typography>
+      <Typography variant="body1">
+        {JSON.stringify(pokemonOfSelectedType)}
+      </Typography>
       <Map region={mapRegion} />
     </Container>
   )
