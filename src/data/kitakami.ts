@@ -7,6 +7,24 @@ import {
   violetIcon,
 } from "@/MapController"
 import { MarkerInfo, PokeFilter } from "./dataTypes"
+import { PokeAPI } from "pokeapi-types"
+
+const kitikamiUncatchable = [
+  "basculegion",
+  "ursaluna",
+  "okidogi",
+  "munkidori",
+  "fezandipiti",
+  "ogerpon",
+]
+
+export function kitikamiCatchable(
+  pokemon: PokeAPI.PokemonEntry,
+  index: number,
+  pokedex: PokeAPI.PokemonEntry[]
+): boolean {
+  return !kitikamiUncatchable.includes(pokemon.pokemon_species.name)
+}
 
 export const kitakamiPokeFilter: PokeFilter = {
   230: {

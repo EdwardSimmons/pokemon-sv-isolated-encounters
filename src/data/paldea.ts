@@ -7,6 +7,35 @@ import {
   violetIcon,
 } from "@/MapController"
 import { MarkerInfo, PokeFilter } from "./dataTypes"
+import { PokeAPI } from "pokeapi-types"
+
+const paldeaUncatchable = [
+  "sprigatito",
+  "floragato",
+  "meowscarada",
+  "fuecoco",
+  "crocalor",
+  "skeledirge",
+  "quaxly",
+  "quaxwell",
+  "quaquaval",
+  "koraidon",
+  "miraidon",
+  "gimmighoul",
+  "gholdengo",
+  "wo-chien",
+  "chien-pao",
+  "ting-lu",
+  "chi-yu",
+]
+
+export function paldeaCatchable(
+  pokemon: PokeAPI.PokemonEntry,
+  index: number,
+  pokedex: PokeAPI.PokemonEntry[]
+): boolean {
+  return !paldeaUncatchable.includes(pokemon.pokemon_species.name)
+}
 
 export const paldeaPokeFilter: PokeFilter = {
   250: {

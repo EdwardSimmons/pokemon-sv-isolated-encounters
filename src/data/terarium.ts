@@ -7,6 +7,26 @@ import {
   violetIcon,
 } from "@/MapController"
 import { MarkerInfo, PokeFilter } from "./dataTypes"
+import { PokeAPI } from "pokeapi-types"
+
+const terariumUncatchable = [
+  "gouging-fire",
+  "raging-bolt",
+  "iron-crown",
+  "iron-boulder",
+  "terapagos",
+  "walking-wake",
+  "iron-leaves",
+  "pecharunt",
+]
+
+export function terariumCatchable(
+  pokemon: PokeAPI.PokemonEntry,
+  index: number,
+  pokedex: PokeAPI.PokemonEntry[]
+): boolean {
+  return !terariumUncatchable.includes(pokemon.pokemon_species.name)
+}
 
 export const terariumPokeFilter: PokeFilter = {
   10: {

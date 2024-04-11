@@ -11,9 +11,23 @@ import { Autocomplete, Avatar, Stack, TextField } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
 import { clearName, selectPokemonName, setName } from "./pokemonNameSlice"
+import { paldeaCatchable } from "@/data/paldea"
+import { kitikamiCatchable } from "@/data/kitakami"
+import { terariumCatchable } from "@/data/terarium"
 
 export interface PokedexProps {
   name: PokedexName
+}
+
+function pokedexFilter(name: PokedexName) {
+  switch (name) {
+    case PokedexName.PALDEA:
+      return paldeaCatchable
+    case PokedexName.KITIKAMI:
+      return kitikamiCatchable
+    case PokedexName.BLUEBERRY:
+      return terariumCatchable
+  }
 }
 
 export const Pokedex = (props: PokedexProps) => {
@@ -45,12 +59,14 @@ export const Pokedex = (props: PokedexProps) => {
         disablePortal
         fullWidth
         id="pokemon-select-autocomplete"
-        options={data.pokemon_entries.map(
-          entry =>
-            `${entry.entry_number} - ${new Str(
-              entry.pokemon_species.name
-            ).toTitleCase()}`
-        )}
+        options={data.pokemon_entries
+          .filter(pokedexFilter(props.name))
+          .map(
+            entry =>
+              `${entry.entry_number} - ${new Str(
+                entry.pokemon_species.name
+              ).toTitleCase()}`
+          )}
         sx={{ my: 2 }}
         renderInput={params => (
           <TextField {...params} label="Choose a Pokémon..." />

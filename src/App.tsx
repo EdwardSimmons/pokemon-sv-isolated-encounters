@@ -57,7 +57,6 @@ export default function App() {
   const handleGameVersionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("[ App ] handleGameVersionChange")
     setGameVersion((event.target as HTMLInputElement).value as GameVersion)
   }
 
@@ -77,3 +76,16 @@ export default function App() {
     </>
   )
 }
+
+// Pokemon select
+//  - fetch info                                          -> nat. id #
+//  - use nat. id to search the pokeFilter array          -> gridId []
+//  - iterate through each gridId, find others that spawn -> % spawn of target
+//                                                        -> other nat. ids
+//  - fetch info for the other nat. ids                   -> highlght same types
+
+// Type Select
+//  - fetch type info -> name []
+//  - filter name [] by comparing with pokedex -> pokemon []
+//  - fetch pokemon [] to get icons -> pokemon buttons
+//  - on push button, carry out pokemon select routine
