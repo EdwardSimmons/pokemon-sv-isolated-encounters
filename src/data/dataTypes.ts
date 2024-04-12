@@ -8,9 +8,9 @@ export interface PokeFilter {
   // The extra digit allows for regional variants, different forms etc.
   [n: number]: {
     tableIDs: number[] // Map grid table IDs where that Pokémon spawns.
-    name?: string
-    types?: PokemonType[]
-    shinySprite?: string
+    name: string
+    types: PokemonType[]
+    shinySprite: string
     exclusiveTo?: GameVersion
   }
 }
