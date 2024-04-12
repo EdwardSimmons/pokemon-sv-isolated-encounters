@@ -71,18 +71,17 @@ export default function App() {
         <RegionSelect region={mapRegion} onChange={handleMapRegionChange} />
         <Map region={mapRegion} />
         <ShinyHuntSelect pokedexName={pokedexName} />
-        <PokemonInfo name={selectedPokemon} />
+        <PokemonInfo name={selectedPokemon} pokedexName={pokedexName} />
       </Container>
     </>
   )
 }
 
-// Pokemon select
-//  - fetch info                                          -> nat. id #
-//  - use nat. id to search the pokeFilter array          -> gridId []
-//  - iterate through each gridId, find others that spawn -> % spawn of target
-//                                                        -> other nat. ids
-//  - fetch info for the other nat. ids                   -> highlght same types
+// Need to do a big fetch loop to add type information to pokefilter table
+// go through pokeFilter
+// if key // 10, then fetch
+// add types to key
+// print entire thing as json?
 
 // Type Select
 //  - fetch type info -> name []
