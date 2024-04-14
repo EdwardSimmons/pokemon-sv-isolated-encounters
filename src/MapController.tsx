@@ -1,79 +1,27 @@
-// // Initialize the map
-// var map = L.map("map", {
-//     minZoom: 1,
-//     maxZoom: 3,
-//     crs: L.CRS.Simple,
-//   }).setView([0, 0], 1); //setView([lat, long], default zoom level)
-
-//   var showCoord = L.control.coordinates({
-//     position: "bottomleft",
-//     customLabelFcn: function (latLonObj, opts) {
-//       var y = latLonObj.lng;
-//       var x = latLonObj.lat;
-//       return (
-//         "Z:" +
-//         map.getZoom() +
-//         "&nbsp;&nbsp;Y:" +
-//         y.toFixed(1) +
-//         "&nbsp;&nbsp;X:" +
-//         x.toFixed(1)
-//       );
-//     },
-//   });
-//   showCoord.addTo(map);
-
-//   if (typeof Number.prototype.toRad === "undefined") {
-//     Number.prototype.toRad = function () {
-//       return (this * Math.PI) / 180;
-//     };
-//   }
-
-//   var southWest = map.unproject([0, 4096], map.getMaxZoom());
-//   var northEast = map.unproject([4096, 0], map.getMaxZoom());
-//   map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
-
-//   L.tileLayer(
-//     "https://www.serebii.net/pokearth/paldea/map/tile_{z}-{x}-{y}.png",
-//     {
-//       minZoom: 0,
-//       maxZoom: 3,
-//       noWrap: true,
-//       reuseTiles: true,
-//       attribution: "Pok&eacute;mon Scarlet & Violet", //map label in bottom right
-//     }
-//   ).addTo(map);
-
-//   var layPokeFilter = L.featureGroup(); // pokemon search results are displayed on this layer
-
-import {
-  LatLngBounds,
-  marker,
-  LatLng,
-  LatLngExpression,
-  LatLngTuple,
-} from "leaflet"
-import { useEffect, useState } from "react"
+import { LatLngBounds, marker, LatLngTuple } from "leaflet"
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 import { useAppSelector } from "./app/hooks"
 import { selectPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 import { selectMapRegion, selectPokedex } from "./features/pokemon/pokedexSlice"
 import { MapRegion } from "./RegionSelect"
-import { MarkerInfo } from "./data/dataTypes"
+import { MarkerInfo, PokeFilter, Pokemon } from "./data/dataTypes"
 import { paldeaMarkers } from "./data/paldea"
 import { kitakamiMarkers } from "./data/kitakami"
 import { terariumMarkers } from "./data/terarium"
-import { layPokeball } from "./data/mapSupport"
+import { layPokeball, highlightlIcon } from "./data/mapSupport"
+import { PokemonType } from "./features/pokemon/pokemonApiSlice"
+import Str from "./utilities/Str"
 
 /**
- * Converts Serebii map marker coordinates into CRS.Simple coordinates.
+ * Converts Serebii map marker coordinates into `CRS.Simple` coordinates.
  * @param coords Serebii map marker coords
- * @param factor The scale factor used to converd the coords.
- *               Paldea uses 5000, Kitikami & the Terarium use 2000
+ * @param scaleFactor The scale scaleFactor used to converd the coords.
+ *                    Paldea uses 5000, Kitikami and the Terarium use 2000
  * @returns Coordinates in CRS.Simple form of [y, x]
  */
-function convert(coords: LatLngTuple, factor = 2000): LatLngTuple {
-  const x = coords[0] * (512 / factor)
-  const y = coords[1] * -1 * (512 / factor)
+function convert(coords: LatLngTuple, scaleFactor: number): LatLngTuple {
+  const x = coords[0] * (512 / scaleFactor)
+  const y = coords[1] * -1 * (512 / scaleFactor)
   return [y, x]
 }
 
@@ -86,6 +34,88 @@ function getMarkers(mapRegion: MapRegion): MarkerInfo[] {
     case MapRegion.TERARIUM:
       return terariumMarkers
   }
+}
+
+export interface SpawnRateByType {
+  type: PokemonType
+  spawnRate: number
+}
+
+export interface SpawnRateByTableId {
+  tableId: number
+  spawnRates: SpawnRateByType[]
+}
+
+function getSpawnRatesByTableId(
+  pokeFilterId: number,
+  pokedex: PokeFilter
+): SpawnRateByTableId[] {
+  // should return an array the same length as pokemon.tableIds
+  const pokemon = pokedex[pokeFilterId]
+  return pokemon.tableIDs.map(tableId => {
+    return {
+      tableId,
+      spawnRates: pokemon.types.map(type => {
+        const allPokemonOfType = getAllPokemonOfType(type, tableId, pokedex)
+        console.log(
+          "tableId: ",
+          tableId,
+          " all pokemon of type: ",
+          type,
+          " -> ",
+          allPokemonOfType.length
+        )
+        return {
+          type,
+          spawnRate: Math.floor(100 / allPokemonOfType.length),
+        }
+      }),
+    }
+  })
+}
+
+function getHighestSpawnRate(spawnRates: SpawnRateByTableId[]): number {
+  let highestSpawnRate = 0
+  for (let i = 0; i < spawnRates.length; i++) {
+    if (
+      spawnRates[i].spawnRates.some(
+        srbt => srbt.spawnRate > highestSpawnRate
+      ) &&
+      spawnRates[i].tableId < 1000 // This is neccesary because the data contains tabeIds for Tera Raid dens.
+    ) {
+      highestSpawnRate = Math.max(
+        ...spawnRates[i].spawnRates.map(srbt => srbt.spawnRate)
+      )
+    }
+  }
+  return highestSpawnRate
+}
+
+function isHighestSpawnRate(
+  spawnRatesByTableId: SpawnRateByTableId,
+  highestSpawnRate: number
+): boolean {
+  return spawnRatesByTableId.spawnRates.some(
+    srbt => srbt.spawnRate === highestSpawnRate
+  )
+}
+
+function getAllPokemonOfType(
+  type: PokemonType,
+  tableId: number,
+  pokedex: PokeFilter
+): Pokemon[] {
+  const filterIds = Object.keys(pokedex).map(id => parseInt(id))
+  const pokemon: Pokemon[] = []
+  filterIds.forEach(filterId => {
+    if (
+      pokedex[filterId].types.includes(type) &&
+      pokedex[filterId].tableIDs.includes(tableId)
+    ) {
+      pokemon.push(pokedex[filterId])
+    }
+  })
+  return pokemon
 }
 
 export default function MapController() {
@@ -102,12 +132,37 @@ export default function MapController() {
   const scaleFactor = selectedMapRegion === MapRegion.PALDEA ? 5000 : 2000
 
   if (!!selectedPokemon) {
-    selectedPokedex[selectedPokemon].tableIDs.forEach(tableId => {
+    // Clear layers each time to ensure no overlaps between selections.
+    layPokeball.clearLayers()
+
+    // Need to know the % spawn by type for each tableId
+    const spawnRatesByTableId = getSpawnRatesByTableId(
+      selectedPokemon,
+      selectedPokedex
+    )
+
+    const highestSpawnRate = getHighestSpawnRate(spawnRatesByTableId)
+
+    // Place a marker at each tableId, highlighting the one with the highest spawn rate.
+    selectedPokedex[selectedPokemon].tableIDs.forEach((tableId, i) => {
       const markerInfo = selectedMarkers.find(m => m.tableID === tableId)
       if (markerInfo) {
         marker(convert(markerInfo.coords, scaleFactor), {
-          icon: markerInfo.icon,
-        }).addTo(layPokeball)
+          icon: isHighestSpawnRate(spawnRatesByTableId[i], highestSpawnRate)
+            ? highlightlIcon
+            : markerInfo.icon,
+        })
+          .addTo(layPokeball)
+          .bindTooltip(
+            spawnRatesByTableId[i].spawnRates
+              .map(
+                spawnRateByType =>
+                  `${new Str(spawnRateByType.type).toTitleCase()}: ${
+                    spawnRateByType.spawnRate
+                  }%`
+              )
+              .join(" | ")
+          )
       }
     })
     layPokeball.addTo(map)

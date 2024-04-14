@@ -68,16 +68,6 @@ export const TypeSelect = () => {
 }
 
 export const PokemonInfo = () => {
-  // Using a query hook automatically fetches data and returns query values
-
-  // Pokemon select
-  //  - fetch info                                          -> nat. id #
-  //  - use nat. id to search the pokeFilter array          -> gridId []
-  //  - iterate through each gridId, find others that spawn
-  //    - for each grid id, fetch all other pokemon to find which share a type with target
-  //    -> % spawn of target by type
-  //  - display pins on map, color set by % value
-
   //  - [user clicks on a map pin]
   //  - iterate though pokeFilter ids to find ones in that grid  -> other nat. ids
   //  - fetch info for the other nat. ids
@@ -98,62 +88,11 @@ export const PokemonInfo = () => {
       >
         <Typography variant="h4">{pokemonName}</Typography>
         <Avatar src={pokemon.shinySprite} sx={{ height: 64, width: 64 }} />
-        <Typography variant="h4">{selectedPokeFilterId}</Typography>
       </Stack>
     )
   }
 
   return null
-}
-
-function getGridIds(
-  pokemonId: number,
-  mapRegion: MapRegion
-): number[] | undefined {
-  const filterId = pokemonId * 10
-  return getPokeFilter(mapRegion)[filterId]?.tableIDs || undefined
-}
-
-interface SpawnRate {
-  gridId: number
-  spawnRate: number
-}
-
-function getSpawnRates(pokemonId: number, mapRegion: MapRegion): SpawnRate[] {
-  const gridIds = getGridIds(pokemonId, mapRegion)
-
-  if (!gridIds) {
-    // I.e. the pokemon does not spawn on the map.
-    return []
-  }
-
-  const pokeFilter = useAppSelector(selectPokedex)
-  const pokemonIds = Object.keys(pokeFilter).map(id => parseInt(id))
-
-  return gridIds.map(gridId => {
-    let otherPokemonIds: number[] = []
-    pokemonIds.forEach(pokemonId => {
-      if (pokeFilter[pokemonId]?.tableIDs.some(id => id === gridId)) {
-        otherPokemonIds.push(pokemonId)
-      }
-    })
-    console.log(otherPokemonIds)
-
-    return {
-      gridId,
-      spawnRate: (1 / otherPokemonIds.length) * 100,
-      // is only giving the total spawn rate, not filtered by type
-    }
-  })
-}
-
-/**
- * Find the other pokemon that also spawn
- * @param tableId The pokeFilter table id to search with.
- * @returns An array of national dex ids.
- */
-function getOtherPokemonIds(tableId: number): number[] {
-  return []
 }
 
 // async function fetchPokemonInfo(filterId: number): Promise<PokeAPI.Pokemon> {

@@ -6,6 +6,11 @@ export const pokeballIcon = new Icon({
   iconSize: [32, 32],
   iconAnchor: [16, 16],
 })
+export const highlightlIcon = new Icon({
+  iconUrl: "./pokeball_highlight.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+})
 
 export const layScarlet = new FeatureGroup()
 export const scarletIcon = new Icon({
