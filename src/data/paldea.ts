@@ -3855,7 +3855,7 @@ export const paldeaPokeFilter: PokeFilter = {
       165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178,
       7410, 7411,
     ],
-    name: "tatsugiri-curly",
+    name: "tatsugiri-stretch",
     types: [PokemonType.DRAGON, PokemonType.WATER],
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10259.png",

@@ -1,35 +1,35 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
-export interface PokemonNameState {
-  name: string
+export interface PokeFilterIdState {
+  id: number
 }
 
-const initialState: PokemonNameState = {
-  name: "",
+const initialState: PokeFilterIdState = {
+  id: 0,
 }
 
-export const pokemonNameSlice = createSlice({
-  name: "pokemonName",
+export const pokeFilterIdSlice = createSlice({
+  name: "pokeFilterId",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: create => ({
-    setName: create.reducer((state, action: PayloadAction<string>) => {
-      state.name = action.payload
+    setPokeFilterId: create.reducer((state, action: PayloadAction<number>) => {
+      state.id = action.payload
     }),
-    clearName: create.reducer(state => {
-      state.name = ""
+    clearPokeFilterId: create.reducer(state => {
+      state.id = 0
     }),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
   selectors: {
-    selectPokemonName: pokemonName => pokemonName.name,
+    selectPokeFilterId: state => state.id,
   },
 })
 
 // Action creators are generated for each case reducer function.
-export const { setName, clearName } = pokemonNameSlice.actions
+export const { setPokeFilterId, clearPokeFilterId } = pokeFilterIdSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectPokemonName } = pokemonNameSlice.selectors
+export const { selectPokeFilterId } = pokeFilterIdSlice.selectors

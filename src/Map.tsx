@@ -49,26 +49,24 @@ import { CRS } from "leaflet"
 import { MapContainer, TileLayer } from "react-leaflet"
 import MapController from "./MapController"
 import { useEffect, useState } from "react"
+import { useAppSelector } from "./app/hooks"
+import { selectMapRegion } from "./features/pokemon/pokedexSlice"
 
-export enum MapRegion {
-  PALDEA = "paldea",
-  KITIKAMI = "kitakami",
-  TERARIUM = "terarium",
-}
+export default function Map() {
+  // App State
+  const mapRegion = useAppSelector(selectMapRegion)
 
-export interface MapProps {
-  region: MapRegion
-}
-
-export default function Map(props: MapProps) {
+  // Local State
   const [mapUrl, setMapUrl] = useState(
-    `https://www.serebii.net/pokearth/${props.region}/map/tile_{z}-{x}-{y}.png`
+    `https://www.serebii.net/pokearth/${mapRegion}/map/tile_{z}-{x}-{y}.png`
   )
+
   useEffect(() => {
     setMapUrl(
-      `https://www.serebii.net/pokearth/${props.region}/map/tile_{z}-{x}-{y}.png`
+      `https://www.serebii.net/pokearth/${mapRegion}/map/tile_{z}-{x}-{y}.png`
     )
-  }, [props.region])
+  }, [mapRegion])
+
   return (
     <MapContainer
       style={{ height: "512px", maxWidth: "512px" }}

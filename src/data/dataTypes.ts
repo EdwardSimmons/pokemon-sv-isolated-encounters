@@ -6,13 +6,15 @@ export interface PokeFilter {
   // National Pokédex number x 10
   // E.g. Bulbasaur === 10, Lechonk === 9150
   // The extra digit allows for regional variants, different forms etc.
-  [n: number]: {
-    tableIDs: number[] // Map grid table IDs where that Pokémon spawns.
-    name: string
-    types: PokemonType[]
-    shinySprite: string
-    exclusiveTo?: GameVersion
-  }
+  [n: number]: Pokemon
+}
+
+export interface Pokemon {
+  tableIDs: number[] // Map grid table IDs where that Pokémon spawns.
+  name: string
+  types: PokemonType[]
+  shinySprite: string
+  exclusiveTo?: GameVersion
 }
 
 export interface MarkerInfo {

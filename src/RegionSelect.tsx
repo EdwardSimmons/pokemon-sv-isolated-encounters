@@ -6,14 +6,31 @@ import {
   RadioGroup,
 } from "@mui/material"
 import Str from "./utilities/Str"
-import { MapRegion } from "./Map"
+import { useAppDispatch } from "./app/hooks"
+import { setMapRegion } from "./features/pokemon/pokedexSlice"
+import { clearPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
+import { useState } from "react"
 
-export interface RegionSelectProps {
-  region: MapRegion
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void
+export enum MapRegion {
+  PALDEA = "paldea",
+  KITIKAMI = "kitakami",
+  TERARIUM = "terarium",
 }
 
-export default function RegionSelect(props: RegionSelectProps) {
+export default function RegionSelect() {
+  const [mapRegion, setLocalMapRegion] = useState<MapRegion>(MapRegion.PALDEA)
+
+  const dispatch = useAppDispatch()
+
+  const handleOnChangeMap = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newMapRegion = (event.target as HTMLInputElement).value as MapRegion
+    // Local State
+    setLocalMapRegion(newMapRegion)
+
+    // App State
+    dispatch(setMapRegion(newMapRegion))
+    dispatch(clearPokeFilterId())
+  }
   return (
     <FormControl fullWidth>
       <FormLabel id="region-select">Select a Region</FormLabel>
@@ -21,8 +38,8 @@ export default function RegionSelect(props: RegionSelectProps) {
         row
         aria-labelledby="region-select"
         name="region-select-radio-buttons-group"
-        value={props.region}
-        onChange={props.onChange}
+        value={mapRegion}
+        onChange={handleOnChangeMap}
       >
         {Object.values(MapRegion).map(region => (
           <FormControlLabel

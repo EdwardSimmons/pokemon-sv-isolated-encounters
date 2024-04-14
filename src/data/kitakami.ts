@@ -1299,7 +1299,7 @@ export const kitakamiPokeFilter: PokeFilter = {
       139, 140, 142, 143, 144, 145, 146, 147, 164, 166, 186, 187, 188, 189, 190,
       191, 192, 193, 194, 195, 196,
     ],
-    name: "mimikyu-disguised",
+    name: "mimikyu",
     types: [PokemonType.GHOST, PokemonType.FAIRY],
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/778.png",
