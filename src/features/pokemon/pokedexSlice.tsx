@@ -79,6 +79,7 @@ export const pokedexSlice = createSlice({
   selectors: {
     selectMapRegion: state => state.mapRegion,
     selectPokedex: state => state.pokedex,
+    selectVersion: state => state.gameVersion,
   },
 })
 
@@ -86,4 +87,5 @@ export const pokedexSlice = createSlice({
 export const { setGameVersion, setMapRegion } = pokedexSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectMapRegion, selectPokedex } = pokedexSlice.selectors
+export const { selectMapRegion, selectPokedex, selectVersion } =
+  pokedexSlice.selectors

@@ -7,11 +7,13 @@ import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
 import { selectPokeFilterId } from "./pokeFilterIdSlice"
 import { getPokeFilter, selectPokedex } from "./pokedexSlice"
 import { MapRegion } from "@/RegionSelect"
+import { GameVersion } from "@/VersionSelect"
 
 export interface PokedexProps {
   options: String[]
   onChange: (event: any, newValue: String | null) => void
   mapRegion: MapRegion
+  gameVersion: GameVersion
 }
 
 export const Pokedex = (props: PokedexProps) => {
@@ -29,7 +31,7 @@ export const Pokedex = (props: PokedexProps) => {
       )}
       onChange={props.onChange}
       disabled={!!selectedType}
-      key={props.mapRegion}
+      key={`${props.mapRegion}-${props.gameVersion}`}
     />
   )
 }

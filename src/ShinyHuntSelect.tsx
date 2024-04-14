@@ -1,7 +1,11 @@
 import { Stack, Typography } from "@mui/material"
 import { Pokedex, TypeSelect } from "./features/pokemon/Pokemon"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
-import { selectMapRegion, selectPokedex } from "./features/pokemon/pokedexSlice"
+import {
+  selectMapRegion,
+  selectPokedex,
+  selectVersion,
+} from "./features/pokemon/pokedexSlice"
 import {
   clearPokeFilterId,
   setPokeFilterId,
@@ -11,6 +15,7 @@ import Str from "./utilities/Str"
 export default function ShinyHuntSelect() {
   const selectedMapRegion = useAppSelector(selectMapRegion)
   const selectedPokedex = useAppSelector(selectPokedex)
+  const selectedVersion = useAppSelector(selectVersion)
   const filterIds = Object.keys(selectedPokedex).map(id => parseInt(id))
 
   const pokedexOptions = filterIds.map(
@@ -42,6 +47,7 @@ export default function ShinyHuntSelect() {
         options={pokedexOptions}
         onChange={handleOnChangePokemon}
         mapRegion={selectedMapRegion}
+        gameVersion={selectedVersion}
       />
       <Typography variant="body1" sx={{ mx: { xs: 0, sm: 2 } }}>
         or

@@ -8,6 +8,7 @@ import {
 import { useState } from "react"
 import { useAppDispatch } from "./app/hooks"
 import { setGameVersion } from "./features/pokemon/pokedexSlice"
+import { clearPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 
 export enum GameVersion {
   SCARLET = "Scarlet",
@@ -28,6 +29,7 @@ export default function VersionSelect() {
     setLocalGameVersion(newVersion)
 
     dispatch(setGameVersion(newVersion))
+    dispatch(clearPokeFilterId())
   }
 
   return (
