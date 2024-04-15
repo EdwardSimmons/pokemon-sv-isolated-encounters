@@ -52,10 +52,10 @@ export default function ShinyHuntSelect() {
         mapRegion={selectedMapRegion}
         gameVersion={selectedVersion}
       />
-      <Typography variant="body1" sx={{ mx: { xs: 0, sm: 2 } }}>
+      {/* <Typography variant="body1" sx={{ mx: { xs: 0, sm: 2 } }}>
         or
       </Typography>
-      <TypeSelect />
+      <TypeSelect /> */}
     </Stack>
   )
 }

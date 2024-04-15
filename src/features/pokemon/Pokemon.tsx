@@ -136,8 +136,8 @@ function OtherPokemonInfo(props: OtherPokemonInfoProps) {
   )
 
   const title = otherPokemonUnique.length
-    ? `Other pokémon that spawn at tile ${props.mapMarkerInfo.tableId}:`
-    : `There are no other pokémon that spawn at tile ${props.mapMarkerInfo.tableId}!`
+    ? `Other pokémon that will spawn at tile ${props.mapMarkerInfo.tableId}:`
+    : `There are no other pokémon that will spawn at tile ${props.mapMarkerInfo.tableId}!`
 
   return (
     <Stack>
