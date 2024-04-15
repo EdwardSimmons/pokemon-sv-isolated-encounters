@@ -8,7 +8,13 @@ import { MarkerInfo, PokeFilter, Pokemon } from "./data/dataTypes"
 import { paldeaMarkers } from "./data/paldea"
 import { kitakamiMarkers } from "./data/kitakami"
 import { terariumMarkers } from "./data/terarium"
-import { layPokeball, highlightlIcon } from "./data/mapSupport"
+import {
+  layPokeball,
+  highlightlIcon,
+  scarletIcon,
+  violetIcon,
+  pokeballIcon,
+} from "./data/mapSupport"
 import { PokemonType } from "./features/pokemon/pokemonApiSlice"
 import Str from "./utilities/Str"
 
@@ -48,30 +54,59 @@ export interface SpawnRateByTableId {
 
 function getSpawnRatesByTableId(
   pokeFilterId: number,
-  pokedex: PokeFilter
+  pokedex: PokeFilter,
+  markers: MarkerInfo[]
 ): SpawnRateByTableId[] {
-  // should return an array the same length as pokemon.tableIds
   const pokemon = pokedex[pokeFilterId]
   return pokemon.tableIDs.map(tableId => {
+    const markerInfo = markers.find(m => m.tableID === tableId)
+    const isVersionExclusive =
+      !!markerInfo && [scarletIcon, violetIcon].includes(markerInfo.icon)
     return {
       tableId,
       spawnRates: pokemon.types.map(type => {
-        const allPokemonOfType = getAllPokemonOfType(type, tableId, pokedex)
-        console.log(
-          "tableId: ",
-          tableId,
-          " all pokemon of type: ",
+        const allPokemonOfType = getAllPokemonOfTypeAtTableId(
           type,
-          " -> ",
-          allPokemonOfType.length
+          isVersionExclusive
+            ? findNonVersionExclusiveMarkerInfo(markerInfo, markers).tableID
+            : tableId,
+          pokedex
         )
         return {
           type,
-          spawnRate: Math.floor(100 / allPokemonOfType.length),
+          spawnRate: Math.floor(
+            100 /
+              (isVersionExclusive
+                ? allPokemonOfType.length + 1 // because the pokemon itself won't be included
+                : allPokemonOfType.length)
+          ),
         }
       }),
     }
   })
+}
+
+/**
+ * @param markerInfo The version exclusive marker to be checked.
+ * @param markers List of all markers for the current map.
+ * @returns The non-version exclusive equivalent marker if found, the original if not.
+ */
+function findNonVersionExclusiveMarkerInfo(
+  markerInfo: MarkerInfo,
+  markers: MarkerInfo[]
+): MarkerInfo {
+  for (let i = 0; i < markers.length; i++) {
+    if (
+      markers[i].coords[0] === markerInfo.coords[0] &&
+      markers[i].coords[1] === markerInfo.coords[1] &&
+      markers[i].tableID !== markerInfo.tableID &&
+      markers[i].icon === pokeballIcon
+    ) {
+      return markers[i]
+    }
+  }
+
+  return markerInfo
 }
 
 function getHighestSpawnRate(spawnRates: SpawnRateByTableId[]): number {
@@ -100,7 +135,7 @@ function isHighestSpawnRate(
   )
 }
 
-function getAllPokemonOfType(
+function getAllPokemonOfTypeAtTableId(
   type: PokemonType,
   tableId: number,
   pokedex: PokeFilter
@@ -112,6 +147,7 @@ function getAllPokemonOfType(
       pokedex[filterId].types.includes(type) &&
       pokedex[filterId].tableIDs.includes(tableId)
     ) {
+      console.log(tableId, " - ", pokedex[filterId].name)
       pokemon.push(pokedex[filterId])
     }
   })
@@ -138,7 +174,8 @@ export default function MapController() {
     // Need to know the % spawn by type for each tableId
     const spawnRatesByTableId = getSpawnRatesByTableId(
       selectedPokemon,
-      selectedPokedex
+      selectedPokedex,
+      selectedMarkers
     )
 
     const highestSpawnRate = getHighestSpawnRate(spawnRatesByTableId)

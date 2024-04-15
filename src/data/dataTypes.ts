@@ -2,6 +2,12 @@ import { GameVersion } from "@/VersionSelect"
 import { PokemonType } from "@/features/pokemon/pokemonApiSlice"
 import { FeatureGroup, Icon, LatLngTuple } from "leaflet"
 
+export type PokeIcon = Icon<{
+  iconUrl: string
+  iconSize: [number, number]
+  iconAnchor: [number, number]
+}>
+
 export interface PokeFilter {
   // National Pokédex number x 10
   // E.g. Bulbasaur === 10, Lechonk === 9150
@@ -19,7 +25,7 @@ export interface Pokemon {
 
 export interface MarkerInfo {
   coords: LatLngTuple // Map coordinates
-  icon: Icon // Leaflet icon.
+  icon: PokeIcon // Leaflet icon.
   tableID: number // ID that corresponds to the filter table for that region.
   layer: FeatureGroup // Leaflet feature group.
 }
