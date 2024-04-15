@@ -1496,19 +1496,10 @@ export const terariumPokeFilter: PokeFilter = {
     tableIDs: [
       86, 105, 106, 107, 116, 117, 118, 119, 127, 128, 129, 130, 136, 196, 7045,
     ],
-    name: "meowstic-male",
+    name: "meowstic",
     types: [PokemonType.PSYCHIC],
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/678.png",
-  },
-  "6781": {
-    tableIDs: [
-      86, 105, 106, 107, 116, 117, 118, 119, 127, 128, 129, 130, 136, 196,
-    ],
-    name: "meowstic-female",
-    types: [PokemonType.PSYCHIC],
-    shinySprite:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10025.png",
   },
   "6860": {
     tableIDs: [

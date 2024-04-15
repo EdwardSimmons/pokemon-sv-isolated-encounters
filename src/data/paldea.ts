@@ -3107,17 +3107,10 @@ export const paldeaPokeFilter: PokeFilter = {
   },
   "8760": {
     tableIDs: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43],
-    name: "indeedee-male",
+    name: "indeedee",
     types: [PokemonType.PSYCHIC, PokemonType.NORMAL],
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/876.png",
-  },
-  "8761": {
-    tableIDs: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43],
-    name: "indeedee-female",
-    types: [PokemonType.PSYCHIC, PokemonType.NORMAL],
-    shinySprite:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/876-female.png",
   },
   "8780": {
     tableIDs: [
@@ -3209,23 +3202,10 @@ export const paldeaPokeFilter: PokeFilter = {
       131, 132, 133, 134, 135, 136, 137, 138, 148, 149, 150, 151, 182, 183, 197,
       198, 202, 204, 205, 210, 233, 311, 312,
     ],
-    name: "oinkologne-male",
+    name: "oinkologne",
     types: [PokemonType.NORMAL],
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/916.png",
-  },
-  "9161": {
-    tableIDs: [
-      6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 29, 35, 40, 44, 45, 46,
-      47, 48, 49, 55, 56, 62, 67, 68, 69, 70, 77, 78, 79, 83, 90, 95, 96, 97,
-      98, 100, 101, 102, 103, 104, 105, 107, 108, 109, 111, 113, 117, 118, 122,
-      131, 132, 133, 134, 135, 136, 137, 138, 148, 149, 150, 151, 182, 183, 197,
-      198, 202, 204, 205, 210, 233, 311, 312,
-    ],
-    name: "oinkologne-female",
-    types: [PokemonType.NORMAL],
-    shinySprite:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/916-female.png",
   },
   "9170": {
     tableIDs: [

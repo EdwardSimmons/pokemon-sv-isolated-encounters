@@ -1,13 +1,15 @@
 import { PokemonType } from "./pokemonApiSlice"
 import Str from "@/utilities/Str"
 import Typography from "@mui/material/Typography"
-import { Autocomplete, Avatar, Stack, TextField } from "@mui/material"
+import { Autocomplete, Avatar, Box, Stack, TextField } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
 import { selectPokeFilterId } from "./pokeFilterIdSlice"
 import { getPokeFilter, selectPokedex } from "./pokedexSlice"
 import { MapRegion } from "@/RegionSelect"
 import { GameVersion } from "@/VersionSelect"
+import { MapMarkerState, selectMapMarker } from "@/features/map/mapSlice"
+import { Pokemon } from "@/data/dataTypes"
 
 export interface PokedexProps {
   options: String[]
@@ -75,71 +77,103 @@ export const PokemonInfo = () => {
 
   const selectedPokeFilterId = useAppSelector(selectPokeFilterId)
   const pokeFilter = useAppSelector(selectPokedex)
-
   const pokemon = pokeFilter[selectedPokeFilterId]
+
+  const mapMarkerInfo = useAppSelector(selectMapMarker)
 
   if (pokemon) {
     const pokemonName = new Str(pokemon.name).toTitleCase()
 
     return (
-      <Stack
-        direction="row"
-        sx={{ alignItems: "center", justifyContent: "space-between" }}
-      >
-        <Typography variant="h4">{pokemonName}</Typography>
-        <Avatar src={pokemon.shinySprite} sx={{ height: 64, width: 64 }} />
-      </Stack>
+      <Box>
+        <Stack
+          direction="row"
+          sx={{ alignItems: "center", justifyContent: "space-between" }}
+        >
+          <Typography variant="h4">{pokemonName}</Typography>
+          <Stack direction="row" alignItems="center">
+            {pokemon.types.map(t => {
+              return (
+                <img
+                  width={32}
+                  height={12}
+                  src={`./types/${t}.gif`}
+                  key={`${pokemonName}-${t}`}
+                  style={{ margin: "0 0.25rem" }}
+                />
+              )
+            })}
+            <Avatar
+              src={pokemon.shinySprite}
+              sx={{ height: 64, width: 64, ml: 0.5 }}
+            />
+          </Stack>
+        </Stack>
+        {!!mapMarkerInfo?.tableId ? (
+          <OtherPokemonInfo
+            mapMarkerInfo={mapMarkerInfo}
+            targetPokemon={pokemon}
+          />
+        ) : null}
+      </Box>
     )
   }
 
   return null
 }
 
-// async function fetchPokemonInfo(filterId: number): Promise<PokeAPI.Pokemon> {
-//   const id = filterId / 10
-//   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-//   return (await response.json()) as PokeAPI.Pokemon
-// }
+interface OtherPokemonInfoProps {
+  mapMarkerInfo: MapMarkerState
+  targetPokemon: Pokemon
+}
 
-// async function megaFetch(pokedexName: PokedexName): Promise<void> {
-//   const pokeFilter = getPokeFilter(pokedexName)
-//   const pokemonIds = Object.keys(pokeFilter).map(id => parseInt(id))
+function OtherPokemonInfo(props: OtherPokemonInfoProps) {
+  const otherPokemon = props.mapMarkerInfo.allPokemon.filter(
+    p => p.name !== props.targetPokemon.name
+  )
+  const otherPokemonUnique = otherPokemon.filter(
+    (item, index) => otherPokemon.indexOf(item) === index
+  )
 
-//   const appendedPokeFilter: PokeFilterPlus = {}
+  const title = otherPokemonUnique.length
+    ? `Other pokémon that spawn at tile ${props.mapMarkerInfo.tableId}:`
+    : `There are no other pokémon that spawn at tile ${props.mapMarkerInfo.tableId}!`
 
-//   for (let i = 0; i < pokemonIds.length; i++) {
-//     // Only fetch for non-variant ids (i.e. ones that end in a zero)
-//     if (pokemonIds[i] % 10 === 0) {
-//       const filterId = pokemonIds[i]
-//       console.log("fetch for filterId: ", filterId)
-//       const info = await fetchPokemonInfo(filterId)
-//       appendedPokeFilter[filterId] = {
-//         tableIDs: pokeFilter[filterId].tableIDs,
-//         name: info.name,
-//         types: formatTypeResponse(info.types),
-//         shinySprite: info.sprites.front_shiny,
-//       }
-//     }
-//   }
-
-//   const exportHelper = new Export(appendedPokeFilter)
-//   exportHelper.asTxt()
-// }
-
-// interface PokeFilterPlus {
-//   [n: number]: {
-//     tableIDs: number[] // Map grid table IDs where that Pokémon spawns.
-//     name: string
-//     types: PokemonType[]
-//     shinySprite: string
-//   }
-// }
-
-// function formatTypeResponse(types: PokeAPI.PokemonType[]): PokemonType[] {
-//   return types.map(typeResponse => {
-//     const type = Object.values(PokemonType).find(
-//       type => type === typeResponse.type.name
-//     )
-//     return type || PokemonType.NORMAL
-//   })
-// }
+  return (
+    <Stack>
+      <Typography variant="h6">{title}</Typography>
+      {otherPokemonUnique.map(otherPokemon => {
+        const otherPokemonName = new Str(otherPokemon.name).toTitleCase()
+        return (
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            key={otherPokemon.name}
+          >
+            <Typography variant="body1">{otherPokemonName}</Typography>
+            <Stack direction="row" alignItems="center">
+              {otherPokemon.types.map(t => {
+                return (
+                  <img
+                    width={32}
+                    height={12}
+                    src={`./types/${t}.gif`}
+                    key={`${otherPokemonName}-${t}`}
+                    style={{ margin: "0 0.25rem" }}
+                  />
+                )
+              })}
+              <Avatar
+                src={otherPokemon.shinySprite}
+                sx={{ height: 48, width: 48 }}
+              />
+            </Stack>
+          </Stack>
+        )
+      })}
+    </Stack>
+  )
+}

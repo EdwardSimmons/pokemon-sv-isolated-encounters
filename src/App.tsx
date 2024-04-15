@@ -15,8 +15,8 @@ export default function App() {
         <VersionSelect />
         <RegionSelect />
         <ShinyHuntSelect />
-        <PokemonInfo />
         <Map />
+        <PokemonInfo />
       </Container>
     </>
   )

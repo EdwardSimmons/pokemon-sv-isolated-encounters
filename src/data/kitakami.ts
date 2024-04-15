@@ -1487,21 +1487,10 @@ export const kitakamiPokeFilter: PokeFilter = {
       75, 85, 87, 96, 121, 126, 146, 148, 149, 150, 151, 152, 153, 154, 155,
       156, 157, 158,
     ],
-    name: "indeedee-male",
+    name: "indeedee",
     types: [PokemonType.PSYCHIC, PokemonType.NORMAL],
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/876.png",
-  },
-  "8761": {
-    tableIDs: [
-      57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74,
-      75, 85, 87, 96, 121, 126, 146, 148, 149, 150, 151, 152, 153, 154, 155,
-      156, 157, 158,
-    ],
-    name: "indeedee-female",
-    types: [PokemonType.PSYCHIC, PokemonType.NORMAL],
-    shinySprite:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/876-female.png",
   },
   "8770": {
     tableIDs: [

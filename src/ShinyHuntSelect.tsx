@@ -11,6 +11,7 @@ import {
   setPokeFilterId,
 } from "./features/pokemon/pokeFilterIdSlice"
 import Str from "./utilities/Str"
+import { clearMapMarker } from "./features/map/mapSlice"
 
 export default function ShinyHuntSelect() {
   const selectedMapRegion = useAppSelector(selectMapRegion)
@@ -33,8 +34,10 @@ export default function ShinyHuntSelect() {
         filterKey => selectedPokedex[parseInt(filterKey)].name === pokemonName
       )
       dispatch(setPokeFilterId(filterIds[filterIdIndex]))
+      dispatch(clearMapMarker())
     } else {
       dispatch(clearPokeFilterId())
+      dispatch(clearMapMarker())
     }
   }
 
