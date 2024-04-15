@@ -1917,20 +1917,6 @@ export const paldeaPokeFilter: PokeFilter = {
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/585-winter.png",
   },
-  "5860": {
-    tableIDs: [7036],
-    name: "sawsbuck-spring",
-    types: [PokemonType.NORMAL, PokemonType.GRASS],
-    shinySprite:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/586.png",
-  },
-  "5861": {
-    tableIDs: [],
-    name: "sawsbuck-summer",
-    types: [PokemonType.NORMAL, PokemonType.GRASS],
-    shinySprite:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/586-summer.png",
-  },
   "5862": {
     tableIDs: [
       7, 10, 12, 19, 20, 21, 22, 23, 24, 25, 29, 78, 83, 90, 100, 101, 103, 105,
