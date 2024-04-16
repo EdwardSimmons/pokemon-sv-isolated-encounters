@@ -32,7 +32,7 @@ export default function Map() {
       crs={CRS.Simple}
     >
       <TileLayer
-        attribution="Map courtesy of <a href='https://www.serebii.net'>Serebii.net</a>."
+        attribution="<a href='https://www.serebii.net'>Serebii.net</a>"
         noWrap
         url={mapUrl}
       />

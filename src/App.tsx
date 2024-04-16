@@ -1,4 +1,4 @@
-import { Container } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import { useEffect, useRef } from "react"
 import { PokemonInfo } from "./features/pokemon/Pokemon"
 import { Loader } from "./Loader"
@@ -27,7 +27,11 @@ export default function App() {
   return (
     <>
       <Loader />
-      <Container maxWidth="sm" sx={{ py: 3 }}>
+      <Container maxWidth="sm" sx={{ py: 3, backgroundColor: "#FFFFFF" }}>
+        <Typography variant="h4">Pokémon Scarlet & Violet</Typography>
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Isolated Encounter Optimisation Tool
+        </Typography>
         <VersionSelect />
         <RegionSelect />
         <ShinyHuntSelect />
