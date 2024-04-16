@@ -25,6 +25,7 @@ export const Pokedex = (props: PokedexProps) => {
     <Autocomplete
       disablePortal
       fullWidth
+      blurOnSelect
       id="pokemon-select-autocomplete"
       options={props.options}
       sx={{ my: 2 }}
