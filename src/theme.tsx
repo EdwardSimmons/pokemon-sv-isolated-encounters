@@ -23,6 +23,15 @@ const theme = createTheme({
       xl: 1536,
     },
   },
+  components: {
+    MuiListItemAvatar: {
+      styleOverrides: {
+        root: {
+          minWidth: 48,
+        },
+      },
+    },
+  },
 })
 
 export default theme

@@ -1,6 +1,7 @@
 import { CRS } from "leaflet"
 import { MapContainer, TileLayer } from "react-leaflet"
-import MapController from "./MapController"
+import MapController from "./features/map/MapController"
+import MapLegend from "./features/map/MapLegend"
 import { useEffect, useState } from "react"
 import { useAppSelector } from "./app/hooks"
 import { selectMapRegion } from "./features/pokemon/pokedexSlice"
@@ -36,6 +37,7 @@ export default function Map() {
         url={mapUrl}
       />
       <MapController />
+      <MapLegend />
     </MapContainer>
   )
 }

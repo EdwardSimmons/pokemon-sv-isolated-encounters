@@ -1,13 +1,13 @@
 import { LatLngBounds, marker, LatLngTuple } from "leaflet"
 import { useMap } from "react-leaflet"
-import { useAppDispatch, useAppSelector } from "./app/hooks"
-import { selectPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
-import { selectMapRegion, selectPokedex } from "./features/pokemon/pokedexSlice"
-import { MapRegion } from "./RegionSelect"
-import { MarkerInfo, PokeFilter, Pokemon } from "./data/dataTypes"
-import { paldeaMarkers } from "./data/paldea"
-import { kitakamiMarkers } from "./data/kitakami"
-import { terariumMarkers } from "./data/terarium"
+import { useAppDispatch, useAppSelector } from "@/app/hooks"
+import { selectPokeFilterId } from "../pokemon/pokeFilterIdSlice"
+import { selectMapRegion, selectPokedex } from "../pokemon/pokedexSlice"
+import { MapRegion } from "@/RegionSelect"
+import { MarkerInfo, PokeFilter, Pokemon } from "@/data/dataTypes"
+import { paldeaMarkers } from "@/data/paldea"
+import { kitakamiMarkers } from "@/data/kitakami"
+import { terariumMarkers } from "@/data/terarium"
 import {
   layPokeball,
   highlightIcon,
@@ -16,10 +16,10 @@ import {
   pokeballIcon,
   laySelected,
   selectedIcon,
-} from "./data/mapSupport"
-import { PokemonType } from "./features/pokemon/pokemonApiSlice"
-import Str from "./utilities/Str"
-import { setMapMarker } from "./features/map/mapSlice"
+} from "@/data/mapSupport"
+import { PokemonType } from "../pokemon/pokemonApiSlice"
+import Str from "@/utilities/Str"
+import { setMapMarker } from "./mapSlice"
 import { useEffect } from "react"
 
 /**
