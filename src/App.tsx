@@ -28,8 +28,8 @@ export default function App() {
     <>
       <Loader />
       <Container maxWidth="sm" sx={{ py: 3, backgroundColor: "#FFFFFF" }}>
-        <Typography variant="h4">Pokémon Scarlet & Violet</Typography>
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography variant="h5">Pokémon Scarlet & Violet</Typography>
+        <Typography variant="h6" sx={{ mb: 2 }}>
           Isolated Encounter Optimisation Tool
         </Typography>
         <VersionSelect />
@@ -41,9 +41,3 @@ export default function App() {
     </>
   )
 }
-
-// Type Select
-//  - fetch type info -> name []
-//  - filter name [] by comparing with pokedex -> pokemon []
-//  - fetch pokemon [] to get icons -> pokemon buttons
-//  - on push button, carry out pokemon select routine

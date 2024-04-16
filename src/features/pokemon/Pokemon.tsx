@@ -85,7 +85,7 @@ export const PokemonInfo = forwardRef(function PokemonInfo(props, ref) {
       <Box ref={ref}>
         <Stack
           direction="row"
-          sx={{ alignItems: "center", justifyContent: "space-between" }}
+          sx={{ alignItems: "center", justifyContent: "space-between", mt: 2 }}
         >
           <Typography variant="h4">{pokemonName}</Typography>
           <Stack direction="row" alignItems="center">
@@ -135,8 +135,6 @@ function OtherPokemonInfo(props: OtherPokemonInfoProps) {
   const title = otherPokemonUnique.length
     ? `Other pokémon that will spawn:`
     : `There are no other pokémon that will spawn at this tile!`
-
-  const targetPokemonName = new Str(props.targetPokemon.name).toTitleCase()
 
   return (
     <Stack>

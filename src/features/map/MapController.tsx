@@ -19,7 +19,7 @@ import {
 } from "@/data/mapSupport"
 import { PokemonType } from "../pokemon/pokemonApiSlice"
 import Str from "@/utilities/Str"
-import { setMapMarker } from "./mapSlice"
+import { clearMapMarker, setMapMarker } from "./mapSlice"
 import { useEffect } from "react"
 
 /**
@@ -202,6 +202,11 @@ export default function MapController() {
   const scaleFactor = selectedMapRegion === MapRegion.PALDEA ? 5000 : 2000
 
   const dispatch = useAppDispatch()
+
+  map.on("click", () => {
+    laySelected.clearLayers()
+    dispatch(clearMapMarker())
+  })
 
   useEffect(() => {
     // Clear the selected layer if the pokemon filterId changes.
