@@ -9,6 +9,7 @@ import ShinyHuntSelect from "./ShinyHuntSelect"
 import { useAppSelector } from "./app/hooks"
 import { selectPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 import { selectMapMarker } from "./features/map/mapSlice"
+import Title from "./Title"
 
 export default function App() {
   const selectedPokeFilterId = useAppSelector(selectPokeFilterId)
@@ -27,11 +28,8 @@ export default function App() {
   return (
     <>
       <Loader />
-      <Container maxWidth="sm" sx={{ py: 3, backgroundColor: "#FFFFFF" }}>
-        <Typography variant="h5">Pokémon Scarlet & Violet</Typography>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Isolated Encounter Optimisation Tool
-        </Typography>
+      <Container maxWidth="sm" sx={{ py: 3 }}>
+        <Title />
         <VersionSelect />
         <RegionSelect />
         <ShinyHuntSelect />
