@@ -164,12 +164,13 @@ function handleStateUpdate(
   tableId: number,
   selectedPokemon: Pokemon,
   selectedPokedex: PokeFilter,
-  dispatch: any
+  dispatch: any,
+  tooltip: string
 ): void {
   const allPokemon = selectedPokemon.types.flatMap(type =>
     getAllPokemonOfTypeAtTableId(type, tableId, selectedPokedex)
   )
-  dispatch(setMapMarker({ tableId, allPokemon }))
+  dispatch(setMapMarker({ tableId, allPokemon, tooltip }))
 }
 
 function getTooltip(
@@ -177,7 +178,7 @@ function getTooltip(
   index: number,
   spawnRatesByTableId: SpawnRateByTableId[]
 ): string {
-  return `Tile ${tableId}: ${spawnRatesByTableId[index].spawnRates
+  return `${spawnRatesByTableId[index].spawnRates
     .map(
       spawnRateByType =>
         `${new Str(spawnRateByType.type).toTitleCase()}: ${
@@ -249,7 +250,8 @@ export default function MapController() {
             nonVersionExclusiveMarkerTableId,
             selectedPokedex[selectedPokemon],
             selectedPokedex,
-            dispatch
+            dispatch,
+            getTooltip(nonVersionExclusiveMarkerTableId, i, spawnRatesByTableId)
           )
 
           // Add a new marker on top to show which was clicked.

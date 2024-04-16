@@ -136,9 +136,23 @@ function OtherPokemonInfo(props: OtherPokemonInfoProps) {
     ? `Other pokémon at tile ${props.mapMarkerInfo.tableId}:`
     : `There are no other pokémon that will spawn at tile ${props.mapMarkerInfo.tableId}!`
 
+  const targetPokemonName = new Str(props.targetPokemon.name).toTitleCase()
+
   return (
     <Stack>
-      <Typography variant="h6">{title}</Typography>
+      <Typography variant="h6">Tile {props.mapMarkerInfo.tableId}</Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+        <Typography variant="body1">
+          {`Spawn rate${props.targetPokemon.types.length > 1 ? "s" : ""}`} for{" "}
+          {targetPokemonName}:
+        </Typography>
+        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+          {props.mapMarkerInfo.tooltip}
+        </Typography>
+      </Box>
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        {title}
+      </Typography>
       {otherPokemonUnique.map(otherPokemon => {
         const otherPokemonName = new Str(otherPokemon.name).toTitleCase()
         return (

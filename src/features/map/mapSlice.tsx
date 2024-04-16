@@ -4,11 +4,13 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 export interface MapMarkerState {
   tableId: number
   allPokemon: Pokemon[]
+  tooltip: string
 }
 
 const initialState: MapMarkerState = {
   tableId: 0,
   allPokemon: [],
+  tooltip: "",
 }
 
 export const mapMarkerSlice = createSlice({
@@ -21,10 +23,11 @@ export const mapMarkerSlice = createSlice({
       (state, action: PayloadAction<MapMarkerState>) => {
         state.tableId = action.payload.tableId
         state.allPokemon = [...action.payload.allPokemon]
+        state.tooltip = action.payload.tooltip
       }
     ),
     clearMapMarker: create.reducer(state => {
-      ;(state.tableId = 0), (state.allPokemon = [])
+      ;(state.tableId = 0), (state.allPokemon = []), (state.tooltip = "")
     }),
   }),
   // You can define your selectors here. These selectors receive the slice
