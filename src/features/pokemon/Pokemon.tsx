@@ -5,11 +5,12 @@ import { Autocomplete, Avatar, Box, Stack, TextField } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
 import { selectPokeFilterId } from "./pokeFilterIdSlice"
-import { getPokeFilter, selectPokedex } from "./pokedexSlice"
+import { selectPokedex } from "./pokedexSlice"
 import { MapRegion } from "@/RegionSelect"
 import { GameVersion } from "@/VersionSelect"
 import { MapMarkerState, selectMapMarker } from "@/features/map/mapSlice"
 import { Pokemon } from "@/data/dataTypes"
+import { forwardRef } from "react"
 
 export interface PokedexProps {
   options: String[]
@@ -70,12 +71,7 @@ export const TypeSelect = () => {
   )
 }
 
-export const PokemonInfo = () => {
-  //  - [user clicks on a map pin]
-  //  - iterate though pokeFilter ids to find ones in that grid  -> other nat. ids
-  //  - fetch info for the other nat. ids
-  //  - display all in a list, highlight common types with target
-
+export const PokemonInfo = forwardRef(function PokemonInfo(props, ref) {
   const selectedPokeFilterId = useAppSelector(selectPokeFilterId)
   const pokeFilter = useAppSelector(selectPokedex)
   const pokemon = pokeFilter[selectedPokeFilterId]
@@ -86,7 +82,7 @@ export const PokemonInfo = () => {
     const pokemonName = new Str(pokemon.name).toTitleCase()
 
     return (
-      <Box>
+      <Box ref={ref}>
         <Stack
           direction="row"
           sx={{ alignItems: "center", justifyContent: "space-between" }}
@@ -121,7 +117,7 @@ export const PokemonInfo = () => {
   }
 
   return null
-}
+})
 
 interface OtherPokemonInfoProps {
   mapMarkerInfo: MapMarkerState

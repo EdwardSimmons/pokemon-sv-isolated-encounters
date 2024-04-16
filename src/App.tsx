@@ -1,13 +1,29 @@
 import { Container } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useRef } from "react"
 import { PokemonInfo } from "./features/pokemon/Pokemon"
 import { Loader } from "./Loader"
-import VersionSelect, { GameVersion } from "./VersionSelect"
+import VersionSelect from "./VersionSelect"
 import RegionSelect from "./RegionSelect"
 import Map from "./Map"
 import ShinyHuntSelect from "./ShinyHuntSelect"
+import { useAppSelector } from "./app/hooks"
+import { selectPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
+import { selectMapMarker } from "./features/map/mapSlice"
 
 export default function App() {
+  const selectedPokeFilterId = useAppSelector(selectPokeFilterId)
+  const selectedMapMarker = useAppSelector(selectMapMarker)
+  const pokemonInfoRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (selectedPokeFilterId && pokemonInfoRef.current) {
+      pokemonInfoRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    }
+  }, [selectedPokeFilterId, selectedMapMarker])
+
   return (
     <>
       <Loader />
@@ -16,7 +32,7 @@ export default function App() {
         <RegionSelect />
         <ShinyHuntSelect />
         <Map />
-        <PokemonInfo />
+        <PokemonInfo ref={pokemonInfoRef} />
       </Container>
     </>
   )
