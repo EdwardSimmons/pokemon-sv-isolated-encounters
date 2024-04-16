@@ -1,5 +1,5 @@
-import { LatLngBounds, marker, LatLngTuple, LeafletMouseEvent } from "leaflet"
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
+import { LatLngBounds, marker, LatLngTuple } from "leaflet"
+import { useMap } from "react-leaflet"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { selectPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 import { selectMapRegion, selectPokedex } from "./features/pokemon/pokedexSlice"
@@ -10,14 +10,17 @@ import { kitakamiMarkers } from "./data/kitakami"
 import { terariumMarkers } from "./data/terarium"
 import {
   layPokeball,
-  highlightlIcon,
+  highlightIcon,
   scarletIcon,
   violetIcon,
   pokeballIcon,
+  laySelected,
+  selectedIcon,
 } from "./data/mapSupport"
 import { PokemonType } from "./features/pokemon/pokemonApiSlice"
 import Str from "./utilities/Str"
 import { setMapMarker } from "./features/map/mapSlice"
+import { useEffect } from "react"
 
 /**
  * Converts Serebii map marker coordinates into `CRS.Simple` coordinates.
@@ -157,7 +160,7 @@ function getAllPokemonOfTypeAtTableId(
   return pokemon
 }
 
-function onClickMapMarker(
+function handleStateUpdate(
   tableId: number,
   selectedPokemon: Pokemon,
   selectedPokedex: PokeFilter,
@@ -167,6 +170,21 @@ function onClickMapMarker(
     getAllPokemonOfTypeAtTableId(type, tableId, selectedPokedex)
   )
   dispatch(setMapMarker({ tableId, allPokemon }))
+}
+
+function getTooltip(
+  tableId: number,
+  index: number,
+  spawnRatesByTableId: SpawnRateByTableId[]
+): string {
+  return `Tile ${tableId}: ${spawnRatesByTableId[index].spawnRates
+    .map(
+      spawnRateByType =>
+        `${new Str(spawnRateByType.type).toTitleCase()}: ${
+          spawnRateByType.spawnRate
+        }%`
+    )
+    .join(" | ")}`
 }
 
 export default function MapController() {
@@ -183,6 +201,11 @@ export default function MapController() {
   const scaleFactor = selectedMapRegion === MapRegion.PALDEA ? 5000 : 2000
 
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    // Clear the selected layer if the pokemon filterId changes.
+    laySelected.clearLayers()
+  }, [selectedPokemon])
 
   if (!!selectedPokemon) {
     // Clear layers each time to ensure no overlaps between selections.
@@ -211,37 +234,46 @@ export default function MapController() {
           ? findNonVersionExclusiveMarkerInfo(markerInfo, selectedMarkers)
               .tableID
           : tableId
-        marker(convert(markerInfo.coords, scaleFactor), {
+        let mapMarker = marker(convert(markerInfo.coords, scaleFactor), {
           icon: isHighestSpawnRate(spawnRatesByTableId[i], highestSpawnRate)
-            ? highlightlIcon
+            ? highlightIcon
             : markerInfo.icon,
         })
           .addTo(layPokeball)
-          .on("click", () =>
-            onClickMapMarker(
-              nonVersionExclusiveMarkerTableId,
-              selectedPokedex[selectedPokemon],
-              selectedPokedex,
-              dispatch
-            )
-          )
           .bindTooltip(
-            `Tile ${nonVersionExclusiveMarkerTableId}: ${spawnRatesByTableId[
-              i
-            ].spawnRates
-              .map(
-                spawnRateByType =>
-                  `${new Str(spawnRateByType.type).toTitleCase()}: ${
-                    spawnRateByType.spawnRate
-                  }%`
-              )
-              .join(" | ")}`
+            getTooltip(nonVersionExclusiveMarkerTableId, i, spawnRatesByTableId)
           )
+
+        mapMarker.on("click", () => {
+          handleStateUpdate(
+            nonVersionExclusiveMarkerTableId,
+            selectedPokedex[selectedPokemon],
+            selectedPokedex,
+            dispatch
+          )
+
+          // Add a new marker on top to show which was clicked.
+          laySelected.clearLayers()
+          marker(mapMarker.getLatLng(), {
+            icon: selectedIcon,
+            zIndexOffset: 999,
+          })
+            .addTo(laySelected)
+            .bindTooltip(
+              getTooltip(
+                nonVersionExclusiveMarkerTableId,
+                i,
+                spawnRatesByTableId
+              )
+            )
+          laySelected.addTo(map)
+        })
       }
     })
     layPokeball.addTo(map)
   } else {
     layPokeball.clearLayers()
+    laySelected.clearLayers()
   }
 
   return null
