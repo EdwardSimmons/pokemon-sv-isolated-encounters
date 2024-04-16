@@ -143,8 +143,7 @@ function OtherPokemonInfo(props: OtherPokemonInfoProps) {
       <Typography variant="h6">Tile {props.mapMarkerInfo.tableId}</Typography>
       <Box sx={{ display: "flex", justifyContent: "space-between", my: 1 }}>
         <Typography variant="body1">
-          {`Spawn rate${props.targetPokemon.types.length > 1 ? "s" : ""}`} for{" "}
-          {targetPokemonName}:
+          {`Spawn rate${props.targetPokemon.types.length > 1 ? "s" : ""}`}:
         </Typography>
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           {props.mapMarkerInfo.tooltip}
