@@ -30,7 +30,7 @@ export default function MapLegend() {
         >
           <ListItemButton onClick={handleClick} sx={{ px: 1 }}>
             <ListItemText
-              primary="Legend"
+              primary="Map Legend"
               sx={{ mr: !open ? 1 : 0, display: !open ? "none" : "block" }}
             />
             {open ? <ExpandLess /> : <ExpandMore />}
