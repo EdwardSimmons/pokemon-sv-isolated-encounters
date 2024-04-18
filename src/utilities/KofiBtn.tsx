@@ -1,8 +1,8 @@
 import { Avatar, Box, Button } from "@mui/material"
 
-export default function Kofi() {
+export default function KofiBtn() {
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+    <Box>
       <Button
         variant="contained"
         size="small"

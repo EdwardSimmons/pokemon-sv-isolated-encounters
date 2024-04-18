@@ -27,7 +27,7 @@ export const Pokedex = (props: PokedexProps) => {
       blurOnSelect
       id="pokemon-select-autocomplete"
       options={props.options}
-      sx={{ my: 2 }}
+      sx={{ mb: { xs: 2, md: 0 }, mt: 2 }}
       renderInput={params => (
         <TextField {...params} label="Choose a Pokémon..." />
       )}
@@ -83,7 +83,11 @@ export const PokemonInfo = forwardRef(function PokemonInfo(props, ref) {
       <Box ref={ref}>
         <Stack
           direction="row"
-          sx={{ alignItems: "center", justifyContent: "space-between", mt: 2 }}
+          sx={{
+            alignItems: "center",
+            justifyContent: "space-between",
+            mt: { xs: 2, md: 0 },
+          }}
         >
           <Typography variant="h4">{pokemonName}</Typography>
           <Stack direction="row" alignItems="center">
@@ -109,7 +113,11 @@ export const PokemonInfo = forwardRef(function PokemonInfo(props, ref) {
             mapMarkerInfo={mapMarkerInfo}
             targetPokemon={pokemon}
           />
-        ) : null}
+        ) : (
+          <Typography>
+            Select a map marker to view more information about that location.
+          </Typography>
+        )}
       </Box>
     )
   }

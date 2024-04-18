@@ -21,7 +21,7 @@ const theme = createTheme({
     values: {
       xs: 0,
       sm: 560, // Custom sm breakpoint such that the map is full-width
-      md: 900,
+      md: 1096, // Custom md breakpoint such that the map is half-width
       lg: 1200,
       xl: 1536,
     },
