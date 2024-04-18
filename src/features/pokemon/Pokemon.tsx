@@ -3,7 +3,7 @@ import Str from "@/utilities/Str"
 import Typography from "@mui/material/Typography"
 import { Autocomplete, Avatar, Box, Stack, TextField } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
-import { clearType, fetchType, selectType, setType } from "./pokemonTypeSlice"
+import { clearTypeFilter, setTypeFilter } from "./pokemonTypeSlice"
 import { selectPokeFilterId } from "./pokeFilterIdSlice"
 import { selectPokedex } from "./pokedexSlice"
 import { MapRegion } from "@/RegionSelect"
@@ -20,8 +20,6 @@ export interface PokedexProps {
 }
 
 export const Pokedex = (props: PokedexProps) => {
-  const selectedType = useAppSelector(selectType)
-
   return (
     <Autocomplete
       disablePortal
@@ -34,24 +32,22 @@ export const Pokedex = (props: PokedexProps) => {
         <TextField {...params} label="Choose a Pokémon..." />
       )}
       onChange={props.onChange}
-      disabled={!!selectedType}
       key={`${props.mapRegion}-${props.gameVersion}`}
     />
   )
 }
 
 export const TypeSelect = () => {
+  const selectedPokeFilterId = useAppSelector(selectPokeFilterId)
   const dispatch = useAppDispatch()
-  const selectedPokemon = useAppSelector(selectPokeFilterId)
 
   const handleOnChangeType = (event: any, newValue: string | null) => {
     // Update state
     if (newValue) {
       const type = newValue.toLowerCase() as PokemonType
-      dispatch(setType(type))
-      dispatch(fetchType(type))
+      dispatch(setTypeFilter(type))
     } else {
-      dispatch(clearType())
+      dispatch(clearTypeFilter())
     }
   }
 
@@ -63,10 +59,12 @@ export const TypeSelect = () => {
       options={Object.values(PokemonType).map(
         type => `${new Str(type).toTitleCase()}`
       )}
-      sx={{ my: 2 }}
-      renderInput={params => <TextField {...params} label="Select a type..." />}
+      sx={{ mt: 2 }}
+      renderInput={params => (
+        <TextField {...params} label="Filter by type (optional)" />
+      )}
       onChange={handleOnChangeType}
-      disabled={!!selectedPokemon}
+      disabled={!!selectedPokeFilterId}
     />
   )
 }

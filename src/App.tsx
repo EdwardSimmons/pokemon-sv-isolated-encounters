@@ -1,7 +1,6 @@
-import { Container, Typography } from "@mui/material"
+import { Container } from "@mui/material"
 import { useEffect, useRef } from "react"
 import { PokemonInfo } from "./features/pokemon/Pokemon"
-import { Loader } from "./Loader"
 import VersionSelect from "./VersionSelect"
 import RegionSelect from "./RegionSelect"
 import Map from "./Map"
@@ -26,16 +25,13 @@ export default function App() {
   }, [selectedPokeFilterId, selectedMapMarker])
 
   return (
-    <>
-      <Loader />
-      <Container maxWidth="sm" sx={{ py: 3 }}>
-        <Title />
-        <VersionSelect />
-        <RegionSelect />
-        <ShinyHuntSelect />
-        <Map />
-        <PokemonInfo ref={pokemonInfoRef} />
-      </Container>
-    </>
+    <Container maxWidth="sm" sx={{ py: 3 }}>
+      <Title />
+      <VersionSelect />
+      <RegionSelect />
+      <ShinyHuntSelect />
+      <Map />
+      <PokemonInfo ref={pokemonInfoRef} />
+    </Container>
   )
 }

@@ -1,18 +1,13 @@
 import { type PayloadAction } from "@reduxjs/toolkit"
 import { PokemonType } from "./pokemonApiSlice"
 import { createAppSlice } from "@/app/createAppSlice"
-import { PokeAPI } from "pokeapi-types"
 
 export interface PokemonTypeState {
-  value: PokemonType | string
-  pokemon: PokeAPI.TypePokemon[]
-  status: "idle" | "loading" | "failed"
+  typeFilter: PokemonType | null
 }
 
 const initialState: PokemonTypeState = {
-  value: "",
-  pokemon: [],
-  status: "idle",
+  typeFilter: null,
 }
 
 export const pokemonTypeSlice = createAppSlice({
@@ -21,46 +16,24 @@ export const pokemonTypeSlice = createAppSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: create => ({
-    setType: create.reducer((state, action: PayloadAction<PokemonType>) => {
-      state.value = action.payload
-    }),
-    clearType: create.reducer(state => {
-      state.value = ""
-      state.pokemon = []
-    }),
-    fetchType: create.asyncThunk(
-      async (type: PokemonType) => {
-        const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`)
-        const data = (await response.json()) as PokeAPI.Type
-        // The value we return becomes the `fulfilled` action payload
-        return data
-      },
-      {
-        pending: state => {
-          state.status = "loading"
-        },
-        fulfilled: (state, action) => {
-          state.status = "idle"
-          state.pokemon = action.payload.pokemon
-        },
-        rejected: state => {
-          state.status = "failed"
-        },
+    setTypeFilter: create.reducer(
+      (state, action: PayloadAction<PokemonType>) => {
+        state.typeFilter = action.payload
       }
     ),
+    clearTypeFilter: create.reducer(state => {
+      state.typeFilter = null
+    }),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
   selectors: {
-    selectType: state => state.value,
-    fetchTypeStatus: state => state.status,
-    selectPokemonOfType: state => state.pokemon,
+    selectTypeFilter: state => state.typeFilter,
   },
 })
 
 // Action creators are generated for each case reducer function.
-export const { setType, clearType, fetchType } = pokemonTypeSlice.actions
+export const { setTypeFilter, clearTypeFilter } = pokemonTypeSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectType, fetchTypeStatus, selectPokemonOfType } =
-  pokemonTypeSlice.selectors
+export const { selectTypeFilter } = pokemonTypeSlice.selectors
