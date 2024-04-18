@@ -9,6 +9,7 @@ import { useAppSelector } from "./app/hooks"
 import { selectPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 import { selectMapMarker } from "./features/map/mapSlice"
 import Title from "./Title"
+import Kofi from "./utilities/KofiBtn"
 
 export default function App() {
   const selectedPokeFilterId = useAppSelector(selectPokeFilterId)
@@ -32,6 +33,7 @@ export default function App() {
       <ShinyHuntSelect />
       <Map />
       <PokemonInfo ref={pokemonInfoRef} />
+      <Kofi />
     </Container>
   )
 }
