@@ -1005,6 +1005,13 @@ export const kitakamiPokeFilter: PokeFilter = {
     shinySprite:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/548.png",
   },
+  "5502": {
+    tableIDs: [59, 71],
+    name: "basculin-white-striped",
+    types: [PokemonType.WATER],
+    shinySprite:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10247.png",
+  },
   "5800": {
     tableIDs: [
       17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 101, 127,
