@@ -213,7 +213,7 @@ export default function MapController() {
     laySelected.clearLayers()
   }, [selectedPokemon])
 
-  if (!!selectedPokemon) {
+  if (!!selectedPokemon && !!selectedPokedex[selectedPokemon]) {
     // Clear layers each time to ensure no overlaps between selections.
     layPokeball.clearLayers()
 

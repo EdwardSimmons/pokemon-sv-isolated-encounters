@@ -8,7 +8,6 @@ import {
 import Str from "./utilities/Str"
 import { useAppDispatch } from "./app/hooks"
 import { setMapRegion } from "./features/pokemon/pokedexSlice"
-import { clearPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 import { useState } from "react"
 import { clearMapMarker } from "./features/map/mapSlice"
 
@@ -30,7 +29,6 @@ export default function RegionSelect() {
 
     // App State
     dispatch(setMapRegion(newMapRegion))
-    dispatch(clearPokeFilterId())
     dispatch(clearMapMarker())
   }
   return (

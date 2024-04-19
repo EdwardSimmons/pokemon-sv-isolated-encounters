@@ -1,13 +1,10 @@
 import { Stack } from "@mui/material"
 import { Pokedex, TypeSelect } from "./features/pokemon/Pokemon"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
-import {
-  selectMapRegion,
-  selectPokedex,
-  selectVersion,
-} from "./features/pokemon/pokedexSlice"
+import { selectPokedex } from "./features/pokemon/pokedexSlice"
 import {
   clearPokeFilterId,
+  selectPokeFilterId,
   setPokeFilterId,
 } from "./features/pokemon/pokeFilterIdSlice"
 import Str from "./utilities/Str"
@@ -40,9 +37,8 @@ function filterPokedexOptions(
 }
 
 export default function ShinyHuntSelect() {
-  const selectedMapRegion = useAppSelector(selectMapRegion)
+  const selectedPokemon = useAppSelector(selectPokeFilterId)
   const selectedPokedex = useAppSelector(selectPokedex)
-  const selectedVersion = useAppSelector(selectVersion)
   const selectedTypeFilter = useAppSelector(selectTypeFilter)
 
   const [filterIds, setFilterIds] = useState<number[]>(
@@ -51,10 +47,17 @@ export default function ShinyHuntSelect() {
   const [pokedexOptions, setPokedexOptions] = useState(
     filterPokedexOptions(selectedTypeFilter, selectedPokedex)
   )
+  const [isPokedexDisabled, setIsPokedexDisabled] = useState(false)
 
   useEffect(() => {
-    setFilterIds(Object.keys(selectedPokedex).map(id => parseInt(id)))
+    const newFilterIds = Object.keys(selectedPokedex).map(id => parseInt(id))
+    setFilterIds(newFilterIds)
     setPokedexOptions(filterPokedexOptions(selectedTypeFilter, selectedPokedex))
+    if (selectedPokemon) {
+      setIsPokedexDisabled(
+        newFilterIds.includes(selectedPokemon) ? false : true
+      )
+    }
   }, [selectedTypeFilter, selectedPokedex])
 
   const dispatch = useAppDispatch()
@@ -78,8 +81,7 @@ export default function ShinyHuntSelect() {
       <Pokedex
         options={pokedexOptions}
         onChange={handleOnChangePokemon}
-        mapRegion={selectedMapRegion}
-        gameVersion={selectedVersion}
+        isDisabled={isPokedexDisabled}
       />
     </Stack>
   )

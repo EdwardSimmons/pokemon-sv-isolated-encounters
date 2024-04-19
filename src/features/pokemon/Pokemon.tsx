@@ -6,8 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { clearTypeFilter, setTypeFilter } from "./pokemonTypeSlice"
 import { selectPokeFilterId } from "./pokeFilterIdSlice"
 import { selectPokedex } from "./pokedexSlice"
-import { MapRegion } from "@/RegionSelect"
-import { GameVersion } from "@/VersionSelect"
 import { MapMarkerState, selectMapMarker } from "@/features/map/mapSlice"
 import { Pokemon } from "@/data/dataTypes"
 import { forwardRef } from "react"
@@ -15,8 +13,7 @@ import { forwardRef } from "react"
 export interface PokedexProps {
   options: String[]
   onChange: (event: any, newValue: String | null) => void
-  mapRegion: MapRegion
-  gameVersion: GameVersion
+  isDisabled: boolean
 }
 
 export const Pokedex = (props: PokedexProps) => {
@@ -32,7 +29,7 @@ export const Pokedex = (props: PokedexProps) => {
         <TextField {...params} label="Choose a Pokémon..." />
       )}
       onChange={props.onChange}
-      key={`${props.mapRegion}-${props.gameVersion}`}
+      disabled={props.isDisabled}
     />
   )
 }

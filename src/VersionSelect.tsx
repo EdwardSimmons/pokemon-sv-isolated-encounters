@@ -8,7 +8,6 @@ import {
 import { useState } from "react"
 import { useAppDispatch } from "./app/hooks"
 import { setGameVersion } from "./features/pokemon/pokedexSlice"
-import { clearPokeFilterId } from "./features/pokemon/pokeFilterIdSlice"
 import { clearMapMarker } from "./features/map/mapSlice"
 
 export enum GameVersion {
@@ -30,7 +29,6 @@ export default function VersionSelect() {
     setLocalGameVersion(newVersion)
 
     dispatch(setGameVersion(newVersion))
-    dispatch(clearPokeFilterId())
     dispatch(clearMapMarker())
   }
 
