@@ -11,7 +11,7 @@ export default function Kudos() {
         >
           AustinJohnPlays
         </Link>
-        . You should definitely check out their channel.
+        . You should definitely check out his channel.
       </Typography>
       <Typography sx={{ mt: { xs: 2, md: 1 } }}>
         This project was inspired by the one created by{" "}
