@@ -41,9 +41,7 @@ export default function App() {
       <ShinyHuntSelect />
       <Map />
       <PokemonInfo ref={pokemonInfoRef} />
-      <Divider sx={{ mt: { xs: 3, md: 0 } }}>
-        <KofiBtn />
-      </Divider>
+      <Divider sx={{ mt: 3 }}>{/* <KofiBtn /> */}</Divider>
       <Kudos />
     </Container>
   )
@@ -72,9 +70,7 @@ export default function App() {
         </Grid>
 
         <Grid item xs={12}>
-          <Divider>
-            <KofiBtn />
-          </Divider>
+          <Divider sx={{ mb: 2 }}>{/* <KofiBtn /> */}</Divider>
           <PokemonInfo ref={pokemonInfoRef} />
         </Grid>
       </Grid>
