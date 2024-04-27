@@ -209,9 +209,9 @@ export default function MapController() {
   })
 
   useEffect(() => {
-    // Clear the selected layer if the pokemon filterId changes.
+    // Clear the selected layer if either the pokemon filterId or the map region changes.
     laySelected.clearLayers()
-  }, [selectedPokemon])
+  }, [selectedPokemon, selectedMapRegion])
 
   if (!!selectedPokemon && !!selectedPokedex[selectedPokemon]) {
     // Clear layers each time to ensure no overlaps between selections.
